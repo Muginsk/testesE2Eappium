@@ -19,27 +19,35 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Instalar Android SDK e ferramentas
+      - name: Instalar dependências e Appium
         run: |
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk
-          sudo apt-get install -y wget unzip
+          sudo apt-get install -y nodejs npm wget unzip
+          npm install -g appium
+          appium -v  # Confirma que o Appium foi instalado corretamente
+
+      - name: Instalar Android SDK e configurar ambiente
+        run: |
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O android-sdk.zip
           sudo mkdir -p /usr/local/android-sdk/cmdline-tools
           sudo unzip android-sdk.zip -d /usr/local/android-sdk/cmdline-tools
           sudo mv /usr/local/android-sdk/cmdline-tools/cmdline-tools /usr/local/android-sdk/cmdline-tools/latest
           export ANDROID_HOME=/usr/local/android-sdk
-          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH
           yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-30"
+          sdkmanager "platform-tools" "platforms;android-30" "system-images;android-30;google_apis;x86"
 
-      - name: Compilar o projeto
-        run: mvn clean compile
-
-      - name: Iniciar API (se necessário)
+      - name: Criar e iniciar um emulador Android
         run: |
-          nohup mvn spring-boot:run & 
-          sleep 10  # Ajuste conforme o tempo de subida da API
+          echo "no" | avdmanager create avd -n test_emulator -k "system-images;android-30;google_apis;x86" --device "pixel"
+          emulator -avd test_emulator -no-audio -no-window &  
+          adb wait-for-device  # Aguarda o emulador iniciar
 
-      - name: Executar testes
-        run: mvn test
+      - name: Iniciar o Appium Server
+        run: |
+          appium --log appium.log &  
+          sleep 10  # Espera o Appium iniciar antes de rodar os testes
+
+      - name: Executar testes com Maven
+        run: mvn clean test
