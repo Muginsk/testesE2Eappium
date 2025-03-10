@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="293b24ff-a8db-4c01-8e7e-60bfdf354856" name="Changes" comment="" />
+    <list default="true" id="293b24ff-a8db-4c01-8e7e-60bfdf354856" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/0b255721-4e27-41f2-8818-dcbaab8c2278-container.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/21833b8e-439d-44ab-997e-150f84c5b09d-container.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/2edba0d6-c474-4d5d-b839-a59d5b29a0bb-result.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/37f16522-49ae-421b-bb48-6ef398981c26-container.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/3e2e949f-121f-4022-a0de-bcd890285567-container.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/40f9ffc5-cbf8-46dd-a0ee-994eed49c050-container.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/6225a2aa-2e48-4883-8cb1-fbb3df88c42c-result.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/846482d0-f61c-4d2e-8ec2-47a6df831c37-result.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/ba2ed6e3-122b-44dc-8dd2-7ed4edc21315-result.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/e2c829d8-dd51-40dd-a4f5-f861cbd8fdb3-container.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/allure-results/f8686093-3134-4da2-96cd-9408c38a8901-container.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-login.LoginTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-login.LoginTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/login.LoginTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/login.LoginTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/allure.properties" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,6 +40,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Muginsk&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Muginsk/testesE2Eappium.git&quot;,
+    &quot;accountId&quot;: &quot;5dd4bf9f-ab88-40f7-a371-3c6aebde1ce2&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -35,18 +67,18 @@
     "JUnit.LoginTest.executor": "Run",
     "JUnit.LoginTest.testCompraCompleta.executor": "Run",
     "JUnit.LoginTest.testLoginComSucesso.executor": "Run",
+    "JUnit.login in java-appium.executor": "Run",
     "Maven.java-appium [clean,install,-U].executor": "Run",
     "Maven.java-appium [clean,install].executor": "Run",
-    "Maven.java-appium [mvn...].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/projetosAutomacao/testesE2Eappium",
+    "last_opened_file_path": "C:/PROJETOSQA/testesE2Eappium",
     "onboarding.tips.debug.path": "C:/projetosAutomacao/java-appium/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.15",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
   }
@@ -55,10 +87,9 @@
     <option name="myCommands">
       <command value="mvn clean install -U" />
       <command value="mvn clean install" />
-      <command value="mvn mvn surefire-report:relatório" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.LoginTest.testLoginComSucesso">
+  <component name="RunManager" selected="JUnit.login in java-appium">
     <configuration name="LoginTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="java-appium" />
       <extension name="coverage">
@@ -122,11 +153,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="login in java-appium" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-appium" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/login" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.login in java-appium" />
         <item itemvalue="JUnit.LoginTest.testLoginComSucesso" />
-        <item itemvalue="JUnit.LoginTest.testCompraCompleta" />
         <item itemvalue="JUnit.LoginTest" />
+        <item itemvalue="JUnit.LoginTest.testCompraCompleta" />
         <item itemvalue="JUnit.LoginTest.DadologinComUsuarioValidoQuandoRealizoLoginEntaoUsuarioLogado" />
       </list>
     </recent_temporary>

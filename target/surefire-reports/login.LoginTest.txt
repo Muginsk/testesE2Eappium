@@ -1,16 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: login.LoginTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 21.059 s <<< FAILURE! - in login.LoginTest
-login.LoginTest.testCompraCompleta  Time elapsed: 8.675 s  <<< ERROR!
-org.openqa.selenium.NoSuchElementException: 
-An element could not be located on the page using the given search parameters.
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
-Build info: version: '4.29.0', revision: '5fc1ec94cb'
-System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '11.0.26'
-Driver info: io.appium.java_client.android.AndroidDriver
-Command: [2591612c-dd29-46d8-9cd0-fbbb9b9a9ec5, findElement {value=test-Username, using=accessibility id}]
-Capabilities {appium:appActivity: com.swaglabsmobileapp.MainA..., appium:appPackage: com.swaglabsmobileapp, appium:automationName: UiAutomator2, appium:databaseEnabled: false, appium:desired: {appActivity: com.swaglabsmobileapp.MainA..., appPackage: com.swaglabsmobileapp, automationName: UiAutomator2, deviceName: Pixel 7 Pro, ensureWebviewsHavePages: true, nativeWebScreenshot: true, platformName: ANDROID, udid: emulator-5554}, appium:deviceApiLevel: 35, appium:deviceManufacturer: Google, appium:deviceModel: sdk_gphone64_x86_64, appium:deviceName: emulator-5554, appium:deviceScreenDensity: 560, appium:deviceScreenSize: 1440x3120, appium:deviceUDID: emulator-5554, appium:ensureWebviewsHavePages: true, appium:javascriptEnabled: true, appium:locationContextEnabled: false, appium:nativeWebScreenshot: true, appium:networkConnectionEnabled: true, appium:pixelRatio: 3.5, appium:platformVersion: 15, appium:statBarHeight: 144, appium:takesScreenshot: true, appium:udid: emulator-5554, appium:viewportRect: {height: 2976, left: 0, top: 144, width: 1440}, appium:warnings: {}, appium:webStorageEnabled: false, platformName: ANDROID}
-Session ID: 2591612c-dd29-46d8-9cd0-fbbb9b9a9ec5
-	at login.LoginTest.testCompraCompleta(LoginTest.java:61)
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.763 s - in login.LoginTest
