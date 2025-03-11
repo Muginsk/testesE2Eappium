@@ -1,83 +1,53 @@
-# Testes Automatizados E2E com Appium
+# Testes Automatizados com Appium
 
-## 📌 Descrição
+Este projeto contém testes automatizados utilizando **Appium** para validar o fluxo de login e compra no aplicativo *Swag Labs*.
 
-Este projeto contém testes automatizados **End-to-End (E2E)** para aplicativos móveis utilizando **Appium**. Os testes garantem a funcionalidade da aplicação em dispositivos reais ou emuladores.
+## 📋 Pré-requisitos
+Antes de executar os testes, certifique-se de ter os seguintes requisitos instalados:
+- **Java 11+**
+- **Maven**
+- **Appium Server**
+- **Node.js** e **npm** (para instalar o Appium)
+- **Android SDK** e **Emulador Android**
 
-## 🚀 Tecnologias Utilizadas
+## 🔧 Configuração
+1. Clone este repositório:
+   ```sh
+   git clone https://github.com/seuusuario/appium-tests.git
+   cd appium-tests
+   ```
+2. Instale as dependências:
+   ```sh
+   mvn clean install
+   ```
+3. Inicie o servidor Appium:
+   ```sh
+   appium
+   ```
 
-- **Java** - Linguagem utilizada para os testes  
-- **Appium** - Framework para automação de aplicativos móveis  
-- **JUnit** - Framework de testes unitários  
-- **Maven** - Gerenciador de dependências  
-- **ExtentReports** - Geração de relatórios detalhados  
-- **GitHub Actions** - Para execução dos testes em CI/CD  
-
-## 📂 Estrutura do Projeto
-```
-/testesE2Eappium
-│── src/test/java/
-│   ├── tests/        # Casos de Teste
-│   ├── utils/        # Classes utilitárias
-│── pom.xml           # Gerenciador de dependências Maven
-│── README.md         # Documentação do proje
-
-```
-## 🛠️ Pré-requisitos
-
-Antes de rodar os testes, certifique-se de ter instalado:
-
-- **Java** (versão 11 ou superior)  
-- **Maven**  
-- **Appium Server** instalado e rodando  
-- **Android SDK** configurado corretamente  
-
-Para instalar as dependências, execute:
-
+## 🚀 Executando os Testes
+Para executar os testes automatizados, use o comando:
 ```sh
-mvn clean install
-```
-## ▶️ Como Executar os Testes
-# 🔹 Configurando o Appium Server
-Certifique-se de que o Appium Server está rodando. Você pode iniciar pelo terminal com o comando:
-```sh
-
-appium
-```
-Verifique se o emulador/dispositivo real está conectado:
-```sh
-
-adb devices
-```
-# 🔹 Executando os Testes
-Para rodar todos os testes via Maven:
-```sh
-
 mvn test
 ```
-Executar testes específicos:
-```sh
-mvn -Dtest=NomeDaClasseDeTeste test
+
+## 📄 Relatório de Testes
+Os relatórios de execução são gerados automaticamente na pasta:
 ```
-## 💊 Relatório de Testes
-Os relatórios de execução dos testes são gerados automaticamente na pasta reports/.
-
-## 📣 Importância do Relatório
-Os relatórios fornecem uma visão detalhada dos testes executados, incluindo:
-
-Testes aprovados e falhos
-Tempo de execução de cada teste
-Screenshots capturadas em falhas
-Isso facilita a identificação de problemas e melhora a qualidade do software.
-
-## 🔗 Como Acessar o Relatório ExtentReports
-Após a execução dos testes, o relatório pode ser acessado abrindo o arquivo gerado dentro da pasta reports/.
-
-## 🛠️ Configuração no GitHub Actions
-O projeto possui um workflow configurado para executar os testes automaticamente no GitHub Actions. O workflow está localizado em:
+appium-tests/reports/ExtentReport.html
 ```
-.github/workflows/github_actions_e2e.yml
-```
-## 📝 Licença
-Este projeto está sob a licença MIT. Sinta-se livre para utilizá-lo e contribuir! 
+Para visualizar o relatório, abra o arquivo `ExtentReport.html` em qualquer navegador.
+
+## 📌 Testes Implementados
+- **LoginTest**: Testa o login com um usuário válido.
+- **CompraTest**: Testa o fluxo completo de compra de um produto.
+
+## 🛠 Tecnologias Utilizadas
+- **Java**
+- **Appium**
+- **JUnit 5**
+- **Extent Reports** (para geração de relatórios)
+
+## 📢 Contato
+Caso tenha dúvidas ou sugestões, entre em contato pelo [seu e-mail ou GitHub].
 
