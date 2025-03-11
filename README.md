@@ -15,7 +15,13 @@ Este projeto contém testes automatizados **End-to-End (E2E)** para aplicativos 
 
 ## 📂 Estrutura do Projeto
 ```
-/testesE2Eappium │── src/test/java/ │ ├── tests/ # Casos de Teste │ ├── utils/ # Classes utilitárias │── pom.xml # Gerenciador de dependências Maven │── README.md # Documentação do projeto │── reports/ # Relatórios gerados pelo ExtentReports
+/testesE2Eappium
+│── src/test/java/
+│   ├── tests/        # Casos de Teste
+│   ├── utils/        # Classes utilitárias
+│── pom.xml           # Gerenciador de dependências Maven
+│── README.md         # Documentação do proje
+
 ```
 ## 🛠️ Pré-requisitos
 
@@ -43,7 +49,7 @@ Verifique se o emulador/dispositivo real está conectado:
 
 adb devices
 ```
-#🔹 Executando os Testes
+# 🔹 Executando os Testes
 Para rodar todos os testes via Maven:
 ```sh
 
@@ -70,8 +76,6 @@ Após a execução dos testes, o relatório pode ser acessado abrindo o arquivo 
 ## 🛠️ Configuração no GitHub Actions
 O projeto possui um workflow configurado para executar os testes automaticamente no GitHub Actions. O workflow está localizado em:
 ```
-bash
-
 .github/workflows/github_actions_e2e.yml
 ```
 ## 📝 Licença
