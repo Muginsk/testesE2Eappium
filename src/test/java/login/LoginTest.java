@@ -10,12 +10,15 @@ import pages.CheckoutPage;
 import utils.ExtentReportUtil;
 import com.aventstack.extentreports.ExtentTest;
 import java.time.Duration;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class LoginTest {
     private AndroidDriver driver;
     private LoginPage loginPage;
     private CheckoutPage checkoutPage;
-    private static ExtentTest test;
+    private ExtentTest test;
+    private long startTime;
 
     @BeforeAll
     public static void setupClass() {
@@ -42,60 +45,71 @@ public class LoginTest {
     }
 
     @Test
+    @Order(1)
     public void testLoginComSucesso() {
-        System.out.println("Iniciando Teste de Login...");
         test = ExtentReportUtil.createTest("Teste de Login com Sucesso");
+        startTime = System.currentTimeMillis();
 
-        System.out.println("Preenchendo credenciais...");
-        loginPage.preencherCredenciais("standard_user", "secret_sauce");
+        try {
+            loginPage.preencherCredenciais("standard_user", "secret_sauce");
+            ExtentReportUtil.logInfo(test, "Preencheu credenciais");
 
-        System.out.println("Clicando em login...");
-        loginPage.clicarLogin();
+            loginPage.clicarLogin();
+            ExtentReportUtil.logInfo(test, "Clicou no botão de login");
 
-        System.out.println("Validando tela de produtos...");
-        Assertions.assertTrue(loginPage.validarTelaProdutos(), "A tela de produtos não foi carregada corretamente!");
+            Assertions.assertTrue(loginPage.validarTelaProdutos(), "A tela de produtos não foi carregada corretamente!");
+            ExtentReportUtil.logInfo(test, "Validação da tela de produtos bem-sucedida");
 
-        test.pass("Login realizado com sucesso.");
-        System.out.println("Teste de Login finalizado com sucesso!");
+            ExtentReportUtil.captureScreenshot(driver, test, "testLoginComSucesso");
+        } catch (Exception e) {
+            ExtentReportUtil.captureScreenshotOnFailure(driver, test, "testLoginComSucesso", e);
+            Assertions.fail(e.getMessage());
+        } finally {
+            ExtentReportUtil.endTest(test, startTime);
+        }
     }
 
     @Test
+    @Order(2)
     public void testCompraCompleta() {
-        System.out.println("Iniciando Teste de Compra Completa...");
         test = ExtentReportUtil.createTest("Teste de Compra Completa");
+        startTime = System.currentTimeMillis();
 
-        System.out.println("Preenchendo credenciais...");
-        loginPage.preencherCredenciais("standard_user", "secret_sauce");
+        try {
+            loginPage.preencherCredenciais("standard_user", "secret_sauce");
+            ExtentReportUtil.logInfo(test, "Preencheu credenciais");
 
-        System.out.println("Clicando em login...");
-        loginPage.clicarLogin();
+            loginPage.clicarLogin();
+            ExtentReportUtil.logInfo(test, "Clicou no botão de login");
 
-        System.out.println("Validando tela de produtos...");
-        Assertions.assertTrue(loginPage.validarTelaProdutos(), "A tela de produtos não foi carregada corretamente!");
+            Assertions.assertTrue(loginPage.validarTelaProdutos(), "A tela de produtos não foi carregada corretamente!");
+            ExtentReportUtil.logInfo(test, "Validação da tela de produtos bem-sucedida");
 
-        test.pass("Login realizado com sucesso.");
-        System.out.println("Login realizado com sucesso!");
+            checkoutPage.clicarNoCarrinho();
+            ExtentReportUtil.logInfo(test, "Acessou o carrinho");
 
-        System.out.println("Clicando no carrinho...");
-        checkoutPage.clicarNoCarrinho(); // metodo para garantir que o carrinho seja acessado
+            checkoutPage.iniciarCheckout();
+            ExtentReportUtil.logInfo(test, "Iniciou checkout");
 
-        System.out.println("Iniciando checkout...");
-        checkoutPage.iniciarCheckout(); // metodo para iniciar o checkout corretamente
+            checkoutPage.preencherDadosCheckout("Felipe", "Teste", "06700287");
+            ExtentReportUtil.logInfo(test, "Preencheu os dados do checkout");
 
-        System.out.println("Preenchendo dados do checkout...");
-        checkoutPage.preencherDadosCheckout("Felipe", "Teste", "06700287");
+            checkoutPage.clicarNoCheckout();
+            ExtentReportUtil.logInfo(test, "Clicou no checkout");
 
-        System.out.println("Clicando no checkout...");
-        checkoutPage.clicarNoCheckout(); // metodo para garantir que o checkout seja clicado
+            checkoutPage.finalizarCompra();
+            ExtentReportUtil.logInfo(test, "Finalizou a compra");
 
-        System.out.println("Finalizando compra...");
-        checkoutPage.finalizarCompra();
+            Assertions.assertTrue(checkoutPage.validarCompraConcluida(), "A compra não foi concluída com sucesso!");
+            ExtentReportUtil.logInfo(test, "Compra validada com sucesso");
 
-        System.out.println("Validando se a compra foi concluída...");
-        Assertions.assertTrue(checkoutPage.validarCompraConcluida(), "A compra não foi concluída com sucesso!");
-
-        test.pass("Compra concluída com sucesso!");
-        System.out.println("Teste de Compra Completa finalizado com sucesso!");
+            ExtentReportUtil.captureScreenshot(driver, test, "testCompraCompleta_Sucesso");
+        } catch (Exception e) {
+            ExtentReportUtil.captureScreenshotOnFailure(driver, test, "testCompraCompleta_Fail", e);
+            Assertions.fail(e.getMessage());
+        } finally {
+            ExtentReportUtil.endTest(test, startTime);
+        }
     }
 
     @AfterEach
