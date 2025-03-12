@@ -16,58 +16,58 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
           
-           # Definir o diretório do SDK
-    ANDROID_SDK_ROOT=$HOME/android-sdk
-    mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-
-    # Baixar sdkmanager se não existir
-    if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
-    echo "Baixando sdkmanager..."
-    wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
-    unzip cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools/
-    rm cmdline-tools.zip
-    fi
-
-    # Se o diretório latest não foi criado corretamente, criá-lo manualmente
-    if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
-    echo "Criando diretório 'latest' manualmente..."
-    mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
-    fi
-
-    # Adicionando cmdline-tools e platform-tools ao PATH
-    echo "Adicionando cmdline-tools e platform-tools ao PATH..."
-    export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-
-    # Verificando sdkmanager e adb no PATH
-    echo "Verificando sdkmanager..."
-    which sdkmanager || echo "sdkmanager não encontrado"
-    
-    echo "Verificando adb..."
-    which adb || echo "adb não encontrado"
-
-    # Tentando atualizar sdkmanager
-    echo "Atualizando sdkmanager..."
-    if command -v sdkmanager > /dev/null 2>&1; then
-    sdkmanager --update || echo "Erro ao atualizar sdkmanager"
-    else
-    echo "sdkmanager não encontrado após instalação"
-    fi
-
-    # Instalando o SDK completo, incluindo platform-tools e ferramentas necessárias
-    echo "Instalando o SDK completo..."
-    sdkmanager "platform-tools" "build-tools;30.0.3" "platforms;android-30" "emulator" "system-images;android-30;google_apis;x86_64"
-
-    # Verificando adb após instalação
-    echo "Verificando adb novamente..."
-    which adb || echo "adb não encontrado após instalação"
-
-    # Mostrando o conteúdo do diretório onde o adb deve estar
-    echo "Conteúdo do diretório platform-tools:"
-    ls -la $ANDROID_SDK_ROOT/platform-tools
-
-    # Tentando o adb devices
-    echo "Tentando adb devices..."
-    adb devices || echo "adb devices falhou"
+          # Definir o diretório do SDK
+          ANDROID_SDK_ROOT=$HOME/android-sdk
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          
+          # Baixar sdkmanager se não existir
+          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+            echo "Baixando sdkmanager..."
+            wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
+            unzip cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools/
+            rm cmdline-tools.zip
+          fi
+          
+          # Se o diretório latest não foi criado corretamente, criá-lo manualmente
+          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+            echo "Criando diretório 'latest' manualmente..."
+            mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
+          fi
+          
+          # Adicionando cmdline-tools e platform-tools ao PATH
+          echo "Adicionando cmdline-tools e platform-tools ao PATH..."
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          
+          # Verificando sdkmanager e adb no PATH
+          echo "Verificando sdkmanager..."
+          which sdkmanager || echo "sdkmanager não encontrado"
+          
+          echo "Verificando adb..."
+          which adb || echo "adb não encontrado"
+          
+          # Tentando atualizar sdkmanager
+          echo "Atualizando sdkmanager..."
+          if command -v sdkmanager > /dev/null 2>&1; then
+            sdkmanager --update || echo "Erro ao atualizar sdkmanager"
+          else
+            echo "sdkmanager não encontrado após instalação"
+          fi
+          
+          # Instalando ferramentas necessárias, incluindo platform-tools
+          echo "Instalando platform-tools e outras ferramentas..."
+          sdkmanager "platform-tools" "platforms;android-30" "emulator" "system-images;android-30;google_apis;x86_64"
+          
+          # Verificando adb após instalação
+          echo "Verificando adb novamente..."
+          which adb || echo "adb não encontrado após instalação"
+          
+          # Mostrando o conteúdo do diretório onde o adb deve estar
+          echo "Conteúdo do diretório platform-tools:"
+          ls -la $ANDROID_SDK_ROOT/platform-tools
+          
+          # Tentando o adb devices
+          echo "Tentando adb devices..."
+          adb devices || echo "adb devices falhou"
 
       - name: Iniciar Appium em background
         run: appium --log-level error &
