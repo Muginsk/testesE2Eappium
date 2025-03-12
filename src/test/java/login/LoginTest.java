@@ -12,6 +12,8 @@ import com.aventstack.extentreports.ExtentTest;
 import java.time.Duration;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
+import javax.security.auth.login.LoginException;
+
 @TestMethodOrder(OrderAnnotation.class)
 public class LoginTest {
     private AndroidDriver driver;
@@ -27,22 +29,27 @@ public class LoginTest {
     }
 
     @BeforeEach
-    public void setUp() throws MalformedURLException {
-        System.out.println("Configurando driver para o teste...");
-        UiAutomator2Options options = new UiAutomator2Options()
-                .setPlatformName("Android")
-                .setDeviceName("Pixel 7 Pro")
-                .setAppPackage("com.swaglabsmobileapp")
-                .setAppActivity("com.swaglabsmobileapp.MainActivity")
-                .setUdid("emulator-5554")
-                .setAutomationName("UiAutomator2");
+    public void setUp() {
+        try {
+            System.out.println("Configurando driver para o teste...");
+            UiAutomator2Options options = new UiAutomator2Options()
+                    .setPlatformName("Android")
+                    .setDeviceName("Pixel 7 Pro")
+                    .setAppPackage("com.swaglabsmobileapp")
+                    .setAppActivity("com.swaglabsmobileapp.MainActivity")
+                    .setUdid("emulator-5554")
+                    .setAutomationName("UiAutomator2");
 
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
-        System.out.println("Driver configurado com sucesso!");
+            driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+            System.out.println("Driver configurado com sucesso!");
 
-        loginPage = new LoginPage(driver);
-        checkoutPage = new CheckoutPage(driver);
+            loginPage = new LoginPage(driver);
+            checkoutPage = new CheckoutPage(driver);
+        } catch (Exception e) {
+            Assertions.fail("Erro ao configurar o driver: " + e.getMessage());
+        }
     }
+
 
     @Test
     @Order(1)
@@ -57,13 +64,18 @@ public class LoginTest {
             loginPage.clicarLogin();
             ExtentReportUtil.logInfo(test, "Clicou no botão de login");
 
-            Assertions.assertTrue(loginPage.validarTelaProdutos(), "A tela de produtos não foi carregada corretamente!");
+            if (!loginPage.validarTelaProdutos()) {
+                throw new LoginException("A tela de produtos não foi carregada corretamente!");
+            }
             ExtentReportUtil.logInfo(test, "Validação da tela de produtos bem-sucedida");
 
             ExtentReportUtil.captureScreenshot(driver, test, "testLoginComSucesso");
+        } catch (LoginException e) {
+            ExtentReportUtil.captureScreenshotOnFailure(driver, test, "testLoginComSucesso", e);
+            Assertions.fail("Erro no login: " + e.getMessage());
         } catch (Exception e) {
             ExtentReportUtil.captureScreenshotOnFailure(driver, test, "testLoginComSucesso", e);
-            Assertions.fail(e.getMessage());
+            Assertions.fail("Erro inesperado: " + e.getMessage());
         } finally {
             ExtentReportUtil.endTest(test, startTime);
         }
@@ -115,10 +127,15 @@ public class LoginTest {
     @AfterEach
     public void tearDown() {
         System.out.println("Encerrando driver...");
-        if (driver != null) {
-            driver.quit();
+        try {
+            if (driver != null) {
+                driver.quit();
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao encerrar o driver: " + e.getMessage());
         }
     }
+
 
     @AfterAll
     public static void teardownClass() {

@@ -17,12 +17,17 @@ public class ExtentReportUtil {
     private static ExtentReports extent;
 
     public static void setupReport() {
-        String reportPath = System.getProperty("user.dir") + "/test-output/ExtentReport.html";
-        ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
-
-        extent = new ExtentReports();
-        extent.attachReporter(spark);
+        try {
+            ExtentSparkReporter spark = new ExtentSparkReporter("test-output/ExtentReport.html");
+            extent = new ExtentReports();
+            extent.attachReporter(spark);
+        } catch (Exception e) {
+            System.err.println("Erro ao configurar ExtentReports: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
+
 
 
     public static ExtentTest createTest(String testName) {
@@ -49,26 +54,36 @@ public class ExtentReportUtil {
             test.fail(throwable);
         }
     }
-
     public static void captureScreenshot(AndroidDriver driver, ExtentTest test, String testName) {
         if (driver == null || test == null) return;
 
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        String screenshotDir = System.getProperty("user.dir") + "/screenshots/";
-        String filePath = screenshotDir + testName + ".png"; // Caminho absoluto
+        int attempts = 0;
+        boolean success = false;
+        String directory = "C:/PROJETOSQA/testesE2Eappium/screenshots";  // Caminho fixo
+        String filePath = directory + "/" + testName + ".png";
 
-        try {
-            Files.createDirectories(Paths.get(screenshotDir));
-            Files.copy(srcFile.toPath(), Paths.get(filePath));
-
-            // Adiciona o caminho absoluto ao relatório
-            test.addScreenCaptureFromPath(filePath);
-            test.log(Status.INFO, "Screenshot capturada: " + testName);
-        } catch (IOException e) {
-            test.log(Status.WARNING, "Falha ao salvar screenshot: " + e.getMessage());
-            e.printStackTrace();
+        while (attempts < 3 && !success) {
+            try {
+                File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                Files.createDirectories(Paths.get(directory)); // Cria a pasta caso não exista
+                Files.copy(srcFile.toPath(), Paths.get(filePath));
+                test.addScreenCaptureFromPath(filePath.replace("\\", "/")); // Garante compatibilidade no relatório
+                test.log(Status.INFO, "Screenshot capturada: " + testName);
+                success = true;
+            } catch (IOException e) {
+                attempts++;
+                if (attempts == 3) {
+                    test.log(Status.WARNING, "Falha ao salvar screenshot após múltiplas tentativas: " + e.getMessage());
+                }
+            } catch (Exception e) {
+                test.log(Status.FAIL, "Erro inesperado ao capturar screenshot: " + e.getMessage());
+                e.printStackTrace();
+                break;
+            }
         }
     }
+
+
 
 
     public static void captureScreenshotOnFailure(AndroidDriver driver, ExtentTest test, String testName, Throwable throwable) {
