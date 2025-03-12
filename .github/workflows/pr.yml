@@ -44,30 +44,27 @@ jobs:
           # Ajustar permissões
           sudo chmod -R +x $ANDROID_SDK_ROOT/cmdline-tools/latest/
           
-          # Verificar se sdkmanager e adb estão no PATH
-          echo "Verificando sdkmanager e adb:"
-          ls -alh $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/
-          
           # Definir variáveis de ambiente
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
           echo "$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
           
-          # Instalar as ferramentas necessárias para adb e emulator
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "emulator" "system-images;android-30;google_apis;x86_64"
-          
-          # Certificar que sdkmanager e adb estão no PATH
+          # Verificar se sdkmanager está disponível
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          
-          # Verificar se o sdkmanager está disponível
           sdkmanager --version || true
-          adb version || true
           
-          # Verificar se o adb está corretamente instalado
-          echo "Verificando adb:"
+          # Instalar as ferramentas necessárias para adb e emulator
+          sdkmanager --update
+          sdkmanager "platform-tools" "platforms;android-30" "emulator" "system-images;android-30;google_apis;x86_64"
+          
+          # Verificar se sdkmanager e adb estão no PATH
+          echo "Verificando adb e sdkmanager no PATH"
+          echo $PATH
+          
+          # Verificar se adb foi instalado corretamente
           adb version || true
+          adb devices || true
 
       - name: Iniciar Appium em background
         run: appium --log-level error &
