@@ -101,6 +101,33 @@ npm install -g appium-inspector
 3. **Inicie a sessão** clicando no botão "Start Session".
 4. **Inspecione os elementos** navegando pela interface e copiando os seletores necessários para os testes.
 
+---
+
+## 🔄 Integração com GitHub Actions
+
+Este repositório utiliza **GitHub Actions** para execução automatizada dos testes em pipelines CI/CD.
+
+### 🔹 Configuração do GitHub Actions
+1. Crie um arquivo `.github/workflows/testes-e2e.yml` no repositório.
+2. Adicione o seguinte conteúdo para executar os testes automaticamente:
+   ```yaml
+   name: Testes E2E
+   on: [push, pull_request]
+   jobs:
+     test:
+       runs-on: ubuntu-latest
+       steps:
+         - name: Checkout do código
+           uses: actions/checkout@v3
+         - name: Configurar ambiente
+           run: |
+             sudo apt-get update
+             sudo apt-get install -y openjdk-11-jdk
+             npm install -g appium
+         - name: Executar testes
+           run: mvn test
+   ```
+3. Após configurar o workflow, os testes serão executados automaticamente em cada push ou pull request.
 
 ---
 
@@ -142,20 +169,21 @@ npm install -g appium-inspector
  │   │   └── 📂 resources
  │   ├── 📂 test
  │   │   ├── 📂 java
- │   │   └── 📂 resources
+ |   |   |   ├── 📂 login
+ │   │   |   ├── 📂 pages
+ |   |   |   ├── 📂 utils
  ├── 📄 pom.xml
  ├── 📄 README.md
- ├── 📄 appium-config.json
+
 ```
 
 ---
 
 ## 📊 Relatórios e Logs
-Os screenshots e log detalhado dos testes são salvos automaticamente no relatório em:
+Os screenshots.logs e metricas dos testes são salvos automaticamente no relatório em:
 ```sh
 testesE2Eappium\test-output
 ```
 Para visualizar logs detalhados, consulte o diretório de saída do Maven.
 
 ---
-
