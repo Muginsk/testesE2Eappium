@@ -123,13 +123,10 @@ emulator -list-avds
 ---
 
 ## 📊 Relatórios e Logs
-Os screenshots dos testes são salvos automaticamente em:
+Os screenshots dos testes são salvos automaticamente com o relatorio HTML em:
 ```sh
-C:\PROJETOSQA\testesE2Eappium\test-output
+testesE2Eappium\test-output
 ```
 Para visualizar logs detalhados, consulte o diretório de saída do Maven.
 
 ---
-
-## 📩 Contato
-Se encontrar problemas ou tiver sugestões, abra uma issue! 🚀
