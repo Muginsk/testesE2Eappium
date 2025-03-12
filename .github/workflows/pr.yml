@@ -1,4 +1,4 @@
-name: Testes E2E Appium
+name: pr
 
 on: [push, pull_request]
 
