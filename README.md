@@ -1,12 +1,13 @@
 # Testes E2E com Appium
 
-Este repositório contém testes de automação E2E utilizando Appium para aplicações móveis. A seguir, você encontrará instruções detalhadas para configuração do ambiente, execução dos testes e solução de problemas comuns.
+## 📌 Visão Geral
+Este repositório contém testes de automação E2E utilizando Appium para aplicações móveis. Aqui você encontrará instruções detalhadas para configuração do ambiente, execução dos testes e solução de problemas comuns.
 
 ---
 
-## 1. Configuração do Ambiente
+## 🛠 Configuração do Ambiente
 
-### 1.1. Pré-requisitos
+### 🔹 Pré-requisitos
 Antes de iniciar, certifique-se de ter os seguintes componentes instalados:
 - **Java JDK 11+**
 - **Android SDK** (incluso no Android Studio)
@@ -16,7 +17,7 @@ Antes de iniciar, certifique-se de ter os seguintes componentes instalados:
 - **IntelliJ IDEA** (ou outro IDE de sua escolha)
 - **Drivers necessários** para os dispositivos/emuladores que serão testados
 
-### 1.2. Instalação do Appium
+### 🔹 Instalação do Appium
 
 Execute os seguintes comandos para instalar o Appium globalmente:
 ```sh
@@ -27,7 +28,7 @@ Para verificar se a instalação foi concluída com sucesso, execute:
 appium -v
 ```
 
-### 1.3. Configuração do Android SDK
+### 🔹 Configuração do Android SDK
 Adicione as seguintes variáveis de ambiente no seu sistema:
 ```sh
 export ANDROID_HOME=$HOME/Android/Sdk
@@ -41,9 +42,9 @@ Isso deve listar os dispositivos conectados.
 
 ---
 
-## 2. Execução dos Testes
+## 🚀 Execução dos Testes
 
-### 2.1. Iniciando o Appium Server
+### 🔹 Iniciando o Appium Server
 Antes de executar os testes, o servidor Appium deve estar rodando. Utilize o seguinte comando:
 ```sh
 appium
@@ -53,7 +54,7 @@ Se quiser rodar o Appium em background:
 appium &
 ```
 
-### 2.2. Executando os Testes
+### 🔹 Executando os Testes
 Para rodar todos os testes automatizados, utilize:
 ```sh
 mvn test
@@ -63,7 +64,7 @@ Para executar um teste específico:
 mvn -Dtest=NomeDoTeste test
 ```
 
-### 2.3. Configuração de Emulador
+### 🔹 Configuração de Emulador
 Se precisar iniciar um emulador manualmente, utilize:
 ```sh
 emulator -avd NomeDoEmulador
@@ -75,9 +76,9 @@ emulator -list-avds
 
 ---
 
-## 3. Solução de Problemas Comuns
+## 🛑 Solução de Problemas Comuns
 
-### Erro: "No devices/emulators found"
+### ❌ Erro: "No devices/emulators found"
 **Solução:**
 1. Verifique se o emulador está rodando (`adb devices`)
 2. Se necessário, reinicie o servidor ADB:
@@ -86,7 +87,7 @@ emulator -list-avds
    adb start-server
    ```
 
-### Erro: "Appium could not start"
+### ❌ Erro: "Appium could not start"
 **Solução:**
 - Verifique se outra instância do Appium está rodando e finalize-a.
 - Rode o Appium com mais detalhes:
@@ -94,7 +95,7 @@ emulator -list-avds
   appium --log-level debug
   ```
 
-### Erro: "SessionNotCreatedException"
+### ❌ Erro: "SessionNotCreatedException"
 **Solução:**
 - Certifique-se de que o APK ou pacote de testes está correto.
 - Verifique se o driver do Appium está atualizado:
@@ -104,7 +105,7 @@ emulator -list-avds
 
 ---
 
-## 4. Estrutura do Projeto
+## 📂 Estrutura do Projeto
 ```
 📂 testesE2Eappium
  ├── 📂 src
@@ -121,7 +122,7 @@ emulator -list-avds
 
 ---
 
-## 5. Relatórios e Logs
+## 📊 Relatórios e Logs
 Os screenshots dos testes são salvos automaticamente em:
 ```sh
 C:\PROJETOSQA\testesE2Eappium\test-output
@@ -130,4 +131,5 @@ Para visualizar logs detalhados, consulte o diretório de saída do Maven.
 
 ---
 
+## 📩 Contato
 Se encontrar problemas ou tiver sugestões, abra uma issue! 🚀
