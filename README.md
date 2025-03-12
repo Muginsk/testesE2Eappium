@@ -123,18 +123,6 @@ Para encontrar o **appPackage** e o **appActivity** de um aplicativo Android, si
 
 ---
 
-## 🖥️ Frameworks Suportados
-Este repositório suporta testes automatizados utilizando os seguintes frameworks:
-
-- **Selenium** → Automação de testes web.
-- **Appium** → Automação de testes mobile (Android e iOS).
-- **Cypress** → Automação de testes para aplicações web modernas.
-- **Playwright** → Automação de testes web com suporte a múltiplos navegadores.
-
-A escolha do framework depende do contexto do projeto e dos requisitos de testes.
-
----
-
 ## 🔄 Integração com GitHub Actions
 
 Este repositório utiliza **GitHub Actions** para execução automatizada dos testes em pipelines CI/CD.
@@ -210,13 +198,11 @@ Este repositório utiliza **GitHub Actions** para execução automatizada dos te
 ---
 
 ## 📊 Relatórios e Logs
-Os screenshots dos testes são salvos automaticamente em:
+Os screenshots, logs e métricas dos testes são salvos automaticamente no relatório em:
 ```sh
-C:\PROJETOSQA\testesE2Eappium\test-output
+testesE2Eappium\test-output
 ```
 Para visualizar logs detalhados, consulte o diretório de saída do Maven.
 
 ---
 
-## 📩 Contato
-Se encontrar problemas ou tiver sugestões, abra uma issue! 🚀
