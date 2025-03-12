@@ -93,13 +93,45 @@ npm install -g appium-inspector
    ```json
    {
      "platformName": "Android",
-     "deviceName": "emulator-5554",
-     "app": "/caminho/do/seu/aplicativo.apk",
-     "automationName": "UiAutomator2"
+     "appium:deviceName": "Pixel 7 Pro",
+     "appium:appPackage": "com.swaglabsmobileapp",
+     "appium:appActivity": "com.swaglabsmobileapp.MainActivity",
+     "appium:udid": "emulator-5554",
+     "appium:automationName": "UiAutomator2"
    }
    ```
 3. **Inicie a sessão** clicando no botão "Start Session".
 4. **Inspecione os elementos** navegando pela interface e copiando os seletores necessários para os testes.
+
+### 🔹 Obtendo o App Package e App Activity
+Para encontrar o **appPackage** e o **appActivity** de um aplicativo Android, siga os passos:
+1. Conecte o dispositivo/emulador e execute o seguinte comando para listar os pacotes abertos:
+   ```sh
+   adb shell dumpsys window | grep -E 'mCurrentFocus'
+   ```
+2. O resultado mostrará algo como:
+   ```sh
+   mCurrentFocus=Window{hash u0 com.exemplo.app/com.exemplo.app.MainActivity}
+   ```
+   - **appPackage**: `com.exemplo.app`
+   - **appActivity**: `com.exemplo.app.MainActivity`
+3. Outra opção é utilizar:
+   ```sh
+   adb shell pm list packages
+   ```
+   Para listar todos os pacotes instalados.
+
+---
+
+## 🖥️ Frameworks Suportados
+Este repositório suporta testes automatizados utilizando os seguintes frameworks:
+
+- **Selenium** → Automação de testes web.
+- **Appium** → Automação de testes mobile (Android e iOS).
+- **Cypress** → Automação de testes para aplicações web modernas.
+- **Playwright** → Automação de testes web com suporte a múltiplos navegadores.
+
+A escolha do framework depende do contexto do projeto e dos requisitos de testes.
 
 ---
 
@@ -169,21 +201,22 @@ Este repositório utiliza **GitHub Actions** para execução automatizada dos te
  │   │   └── 📂 resources
  │   ├── 📂 test
  │   │   ├── 📂 java
- |   |   |   ├── 📂 login
- │   │   |   ├── 📂 pages
- |   |   |   ├── 📂 utils
+ │   │   └── 📂 resources
  ├── 📄 pom.xml
  ├── 📄 README.md
-
+ ├── 📄 appium-config.json
 ```
 
 ---
 
 ## 📊 Relatórios e Logs
-Os screenshots.logs e metricas dos testes são salvos automaticamente no relatório em:
+Os screenshots dos testes são salvos automaticamente em:
 ```sh
-testesE2Eappium\test-output
+C:\PROJETOSQA\testesE2Eappium\test-output
 ```
 Para visualizar logs detalhados, consulte o diretório de saída do Maven.
 
 ---
+
+## 📩 Contato
+Se encontrar problemas ou tiver sugestões, abra uma issue! 🚀
