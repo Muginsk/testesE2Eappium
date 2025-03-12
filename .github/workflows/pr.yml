@@ -4,11 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-22.04
-
-    env:
-      ANDROID_HOME: /usr/local/android-sdk
-      PATH: /usr/local/android-sdk/cmdline-tools/latest/bin:/usr/local/android-sdk/platform-tools:/usr/local/android-sdk/emulator:$PATH
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout do código
@@ -17,38 +13,39 @@ jobs:
       - name: Configurar ambiente
         run: |
           sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip
+          sudo apt-get install -y openjdk-11-jdk android-sdk
+          echo "Configurando variáveis de ambiente..."
+          echo "ANDROID_HOME=$HOME/Android/Sdk" >> $GITHUB_ENV
+          echo "$ANDROID_HOME/tools" >> $GITHUB_PATH
+          echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
+          export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+          sdkmanager --list
           npm install -g appium
 
-      - name: Instalar Android SDK e ferramentas
-        run: |
-          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-          sudo mkdir -p $ANDROID_HOME/cmdline-tools
-          sudo unzip cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
-          sudo mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
-          rm cmdline-tools.zip
-          yes | sdkmanager --licenses
-          sdkmanager --update
-          sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3" "system-images;android-30;google_apis;x86_64" "emulator"
+      - name: Iniciar Appium em background
+        run: appium &
 
-      - name: Criar e iniciar emulador Android
-        run: |
-          echo "no" | avdmanager create avd -n test_avd -k "system-images;android-30;google_apis;x86_64"
-          nohup emulator -avd test_avd -no-window -no-audio -no-boot-anim &
+      - name: Verificar dispositivos conectados
+        run: adb devices
 
-      - name: Aguardar inicialização do emulador
+      - name: Configurar permissões para SDK Android
         run: |
-          boot_completed=""
-          while [ -z "$boot_completed" ]; do
-            sleep 5
-            boot_completed=$(adb shell getprop sys.boot_completed 2>/dev/null)
-          done
-          echo "Emulador pronto!"
+          sudo chmod -R 777 /usr/local/lib/android
+          sudo chmod -R 777 $ANDROID_HOME
 
-      - name: Iniciar o Appium Server
+      - name: Iniciar emulador Android
         run: |
-          nohup appium --log appium.log &
-          sleep 10
+          echo "Iniciando emulador..."
+          nohup emulator -avd NomeDoEmulador -no-snapshot-load -no-audio -no-window &  
+          adb wait-for-device
+          adb shell input keyevent 82  # Desbloquear emulador
 
-      - name: Executar testes
+      - name: Executar testes automatizados
         run: mvn test
+
+      - name: Upload de screenshots em caso de falha
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: C:\PROJETOSQA\testesE2Eappium\test-output
