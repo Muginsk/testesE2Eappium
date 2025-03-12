@@ -33,11 +33,9 @@ jobs:
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
           
-          # Atualizando o PATH
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
-          echo "$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
+          # Adicionando cmdline-tools ao PATH
+          echo "Adicionando cmdline-tools ao PATH..."
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           
           # Verificando sdkmanager e adb no PATH
           echo "Verificando sdkmanager..."
@@ -47,9 +45,15 @@ jobs:
           which adb || echo "adb não encontrado"
           
           # Tentando atualizar sdkmanager
-          sdkmanager --update || echo "Erro ao atualizar sdkmanager"
+          echo "Atualizando sdkmanager..."
+          if command -v sdkmanager > /dev/null 2>&1; then
+            sdkmanager --update || echo "Erro ao atualizar sdkmanager"
+          else
+            echo "sdkmanager não encontrado após instalação"
+          fi
           
           # Instalando ferramentas necessárias, incluindo platform-tools
+          echo "Instalando platform-tools e outras ferramentas..."
           sdkmanager "platform-tools" "platforms;android-30" "emulator" "system-images;android-30;google_apis;x86_64"
           
           # Verificando adb após instalação
