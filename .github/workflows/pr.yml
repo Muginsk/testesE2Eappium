@@ -31,6 +31,16 @@ jobs:
           echo "Conteúdo do diretório cmdline-tools:"
           ls -alh $ANDROID_SDK_ROOT/cmdline-tools/
           
+          # Se o diretório latest não foi criado corretamente, criar manualmente
+          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+            echo "Criando diretório 'latest' manualmente..."
+            mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
+          fi
+          
+          # Verificar a estrutura do diretório 'latest'
+          echo "Conteúdo do diretório latest:"
+          ls -alh $ANDROID_SDK_ROOT/cmdline-tools/latest
+          
           # Ajustar permissões
           sudo chmod -R +x $ANDROID_SDK_ROOT/cmdline-tools/latest/
           
