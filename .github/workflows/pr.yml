@@ -52,7 +52,11 @@ jobs:
           
           # Verificar se sdkmanager está disponível
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          sdkmanager --version || true
+          echo "PATH: $PATH"
+          
+          # Verificar sdkmanager e adb
+          sdkmanager --version || echo "sdkmanager não encontrado"
+          adb version || echo "adb não encontrado"
           
           # Instalar as ferramentas necessárias para adb e emulator
           sdkmanager --update
