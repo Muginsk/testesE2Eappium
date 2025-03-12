@@ -76,6 +76,34 @@ emulator -list-avds
 
 ---
 
+## 🛠 Utilizando o Appium Inspector
+
+O **Appium Inspector** é uma ferramenta útil para inspecionar os elementos da UI do aplicativo e obter os localizadores corretos para os testes automatizados.
+
+### 🔹 Instalação do Appium Inspector
+O Appium Inspector pode ser baixado no site oficial do Appium ou instalado via npm:
+```sh
+npm install -g appium-inspector
+```
+
+### 🔹 Como utilizar o Appium Inspector
+1. **Abra o Appium Inspector** e conecte-o ao servidor Appium rodando na sua máquina.
+2. **Configure a sessão** inserindo as Desired Capabilities do seu aplicativo.
+   - Exemplo de configuração para Android:
+   ```json
+   {
+     "platformName": "Android",
+     "deviceName": "emulator-5554",
+     "app": "/caminho/do/seu/aplicativo.apk",
+     "automationName": "UiAutomator2"
+   }
+   ```
+3. **Inicie a sessão** clicando no botão "Start Session".
+4. **Inspecione os elementos** navegando pela interface e copiando os seletores necessários para os testes.
+
+
+---
+
 ## 🛑 Solução de Problemas Comuns
 
 ### ❌ Erro: "No devices/emulators found"
@@ -123,10 +151,11 @@ emulator -list-avds
 ---
 
 ## 📊 Relatórios e Logs
-Os screenshots dos testes são salvos automaticamente com o relatorio HTML em:
+Os screenshots e log detalhado dos testes são salvos automaticamente no relatório em:
 ```sh
 testesE2Eappium\test-output
 ```
 Para visualizar logs detalhados, consulte o diretório de saída do Maven.
 
 ---
+
