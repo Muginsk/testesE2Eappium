@@ -2,33 +2,99 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class CheckoutPage {
     private AndroidDriver driver;
-    private WebDriverWait wait;
+    private static final int MAX_RETRIES = 3;
 
     public CheckoutPage(AndroidDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    public void preencherDadosCheckout(String firstName, String lastName, String zipCode) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.accessibilityId("test-First Name")));
-        driver.findElement(AppiumBy.accessibilityId("test-First Name")).sendKeys(firstName);
-        driver.findElement(AppiumBy.accessibilityId("test-Last Name")).sendKeys(lastName);
-        driver.findElement(AppiumBy.accessibilityId("test-Zip/Postal Code")).sendKeys(zipCode);
-        driver.findElement(AppiumBy.accessibilityId("test-CONTINUE")).click();
+    public void clicarNoCarrinho() {
+        retry(() -> {
+            WebElement botaoCarrinho = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("test-Cart")));
+            botaoCarrinho.click();
+            System.out.println("Clicando no botão do carrinho.");
+        }, "Falha ao clicar no botão do carrinho.");
+    }
+
+    public void iniciarCheckout() {
+        clicarNoCarrinho(); // Garante que o carrinho seja acessado antes do checkout
+
+        retry(() -> {
+            WebElement botaoCheckout = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("test-CHECKOUT")));
+            botaoCheckout.click();
+            System.out.println("Iniciando checkout.");
+        }, "Falha ao iniciar o checkout.");
+    }
+
+    public void preencherDadosCheckout(String primeiroNome, String sobrenome, String cep) {
+        retry(() -> {
+            WebElement campoPrimeiroNome = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.accessibilityId("test-First Name")));
+            campoPrimeiroNome.clear();
+            campoPrimeiroNome.sendKeys(primeiroNome);
+
+            WebElement campoSobrenome = driver.findElement(AppiumBy.accessibilityId("test-Last Name"));
+            campoSobrenome.clear();
+            campoSobrenome.sendKeys(sobrenome);
+
+            WebElement campoCep = driver.findElement(AppiumBy.accessibilityId("test-Zip/Postal Code"));
+            campoCep.clear();
+            campoCep.sendKeys(cep);
+        }, "Falha ao preencher os dados do checkout.");
+    }
+
+    public void clicarNoCheckout() {
+        retry(() -> {
+            WebElement botaoCheckout = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.TextView[@text='CONTINUE']")));
+            botaoCheckout.click();
+            System.out.println("Clicando no botão de Checkout.");
+        }, "Falha ao clicar no botão de Checkout.");
     }
 
     public void finalizarCompra() {
-        driver.findElement(AppiumBy.accessibilityId("test-FINISH")).click();
+        retry(() -> {
+            WebElement botaoFinalizar = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.elementToBeClickable(AppiumBy.xpath("//android.widget.TextView[@text='FINISH']")));
+
+            System.out.println("Tentando finalizar compra...");
+            botaoFinalizar.click();
+        }, "Falha ao finalizar a compra.");
     }
 
+
+
+
+
     public boolean validarCompraConcluida() {
-        return driver.findElement(AppiumBy.xpath("//android.widget.TextView[@text='CHECKOUT: COMPLETE!']")).isDisplayed();
+        try {
+            return new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(AppiumBy.accessibilityId("test-CHECKOUT: COMPLETE!"))).isDisplayed();
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
+    private void retry(Runnable action, String errorMessage) {
+        int attempt = 0;
+        while (attempt < MAX_RETRIES) {
+            try {
+                action.run();
+                return; // Sai do loop se for bem-sucedido
+            } catch (TimeoutException | NoSuchElementException e) {
+                System.out.println(errorMessage + " Tentativa " + (attempt + 1) + " falhou.");
+            }
+            attempt++;
+        }
+        throw new RuntimeException(errorMessage + " Após " + MAX_RETRIES + " tentativas.");
     }
 }
