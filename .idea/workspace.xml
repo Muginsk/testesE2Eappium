@@ -6,12 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="293b24ff-a8db-4c01-8e7e-60bfdf354856" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screenshots/testCompraCompleta_Sucesso.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/screenshots/testLoginComSucesso.png" beforeDir="false" afterPath="$PROJECT_DIR$/screenshots/testLoginComSucesso.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/login/LoginTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/login/LoginTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/utils/ExtentReportUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/utils/ExtentReportUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/login/LoginTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/login/LoginTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test-output/ExtentReport.html" beforeDir="false" afterPath="$PROJECT_DIR$/test-output/ExtentReport.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
