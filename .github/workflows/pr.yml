@@ -21,12 +21,14 @@ jobs:
           cd $ANDROID_SDK_ROOT/cmdline-tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
           unzip cmdline-tools.zip
-          mv cmdline-tools latest
+          
+          # Ajustar estrutura de pastas para que sdkmanager funcione
+          mv cmdline-tools latest/cmdline-tools
           
           # Definir variáveis de ambiente
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/cmdline-tools/bin" >> $GITHUB_PATH
           echo "$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
           
           # Atualizar pacotes do SDK
