@@ -27,22 +27,11 @@ jobs:
             rm cmdline-tools.zip
           fi
           
-          # Verificar estrutura do diretório cmdline-tools
-          echo "Conteúdo do diretório cmdline-tools:"
-          ls -alh $ANDROID_SDK_ROOT/cmdline-tools/
-          
           # Se o diretório latest não foi criado corretamente, criá-lo manualmente
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "Criando diretório 'latest' manualmente..."
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
-          
-          # Verificar a estrutura do diretório latest
-          echo "Conteúdo do diretório latest:"
-          ls -alh $ANDROID_SDK_ROOT/cmdline-tools/latest
-          
-          # Ajustar permissões
-          sudo chmod -R +x $ANDROID_SDK_ROOT/cmdline-tools/latest/
           
           # Definir variáveis de ambiente
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
@@ -52,26 +41,24 @@ jobs:
           
           # Verificar sdkmanager e adb
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          echo "Verificando o PATH:"
-          echo $PATH
           
-          # Verificar se sdkmanager está disponível
           echo "Verificando sdkmanager..."
           sdkmanager --version || echo "sdkmanager não encontrado"
           
-          # Verificar se adb está disponível
           echo "Verificando adb..."
           adb version || echo "adb não encontrado"
           
-          # Instalar as ferramentas necessárias
-          sdkmanager --update
+          # Tentar atualizar sdkmanager
+          sdkmanager --update || echo "Erro ao atualizar sdkmanager"
+          
+          # Instalar as ferramentas necessárias, incluindo o platform-tools
           sdkmanager "platform-tools" "platforms;android-30" "emulator" "system-images;android-30;google_apis;x86_64"
           
-          # Verificar novamente o adb e sdkmanager após instalação
+          # Verificar novamente o adb após instalação
           echo "Verificando adb novamente..."
           adb version || echo "adb não encontrado após instalação"
           
-          # Tentar novamente a execução do adb devices
+          # Tentando o adb devices
           echo "Tentando adb devices..."
           adb devices || echo "adb devices falhou"
 
