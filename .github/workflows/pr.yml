@@ -64,6 +64,10 @@ jobs:
           # Verificar se o sdkmanager está disponível
           sdkmanager --version || true
           adb version || true
+          
+          # Verificar se o adb está corretamente instalado
+          echo "Verificando adb:"
+          adb version || true
 
       - name: Iniciar Appium em background
         run: appium --log-level error &
