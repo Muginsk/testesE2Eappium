@@ -12,6 +12,7 @@ jobs:
 
       - name: Configurar ambiente
         run: |
+          # Atualizar e instalar dependências
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
           
@@ -59,6 +60,10 @@ jobs:
           # Verificando adb após instalação
           echo "Verificando adb novamente..."
           which adb || echo "adb não encontrado após instalação"
+          
+          # Mostrando o conteúdo do diretório onde o adb deve estar
+          echo "Conteúdo do diretório platform-tools:"
+          ls -la $ANDROID_SDK_ROOT/platform-tools
           
           # Tentando o adb devices
           echo "Tentando adb devices..."
