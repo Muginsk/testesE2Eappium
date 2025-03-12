@@ -34,17 +34,18 @@ jobs:
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
           
-          # Baixar platform-tools explicitamente
-          echo "Baixando platform-tools..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" --install
+          # Baixar platform-tools e emulador
+          echo "Baixando platform-tools e emulador..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" --install
           
-          # Adicionando sdkmanager e platform-tools ao PATH
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          echo "Adicionando sdkmanager e platform-tools ao PATH..."
+          # Adicionando sdkmanager, platform-tools e emulator ao PATH
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
+          echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
 
-          # Verificando sdkmanager e adb
+          # Verificando sdkmanager, adb e emulator
           which sdkmanager || echo "sdkmanager não encontrado"
           which adb || echo "adb não encontrado"
+          which emulator || echo "emulator não encontrado"
           
           # Verificando conteúdo do diretório platform-tools
           echo "Conteúdo do diretório platform-tools:"
@@ -67,7 +68,7 @@ jobs:
           echo "Criando e iniciando emulador..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64"
           echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
-          nohup emulator -avd TestAVD -no-snapshot-load -no-audio -no-window & 
+          nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window & 
           sleep 60  # Esperar o emulador carregar
           adb wait-for-device
           adb shell input keyevent 82  # Desbloquear tela
