@@ -1,53 +1,133 @@
-# Testes Automatizados com Appium
+# Testes E2E com Appium
 
-Este projeto contém testes automatizados utilizando **Appium** para validar o fluxo de login e compra no aplicativo *Swag Labs*.
+Este repositório contém testes de automação E2E utilizando Appium para aplicações móveis. A seguir, você encontrará instruções detalhadas para configuração do ambiente, execução dos testes e solução de problemas comuns.
 
-## 📋 Pré-requisitos
-Antes de executar os testes, certifique-se de ter os seguintes requisitos instalados:
-- **Java 11+**
-- **Maven**
+---
+
+## 1. Configuração do Ambiente
+
+### 1.1. Pré-requisitos
+Antes de iniciar, certifique-se de ter os seguintes componentes instalados:
+- **Java JDK 11+**
+- **Android SDK** (incluso no Android Studio)
+- **Node.js (versão 14 ou superior)**
 - **Appium Server**
-- **Node.js** e **npm** (para instalar o Appium)
-- **Android SDK** e **Emulador Android**
+- **Appium Inspector** (Opcional, mas útil para inspecionar elementos da UI)
+- **IntelliJ IDEA** (ou outro IDE de sua escolha)
+- **Drivers necessários** para os dispositivos/emuladores que serão testados
 
-## 🔧 Configuração
-1. Clone este repositório:
-   ```sh
-   git clone https://github.com/seuusuario/appium-tests.git
-   cd appium-tests
-   ```
-2. Instale as dependências:
-   ```sh
-   mvn clean install
-   ```
-3. Inicie o servidor Appium:
-   ```sh
-   appium
-   ```
+### 1.2. Instalação do Appium
 
-## 🚀 Executando os Testes
-Para executar os testes automatizados, use o comando:
+Execute os seguintes comandos para instalar o Appium globalmente:
+```sh
+npm install -g appium
+```
+Para verificar se a instalação foi concluída com sucesso, execute:
+```sh
+appium -v
+```
+
+### 1.3. Configuração do Android SDK
+Adicione as seguintes variáveis de ambiente no seu sistema:
+```sh
+export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+```
+Verifique a instalação executando:
+```sh
+adb devices
+```
+Isso deve listar os dispositivos conectados.
+
+---
+
+## 2. Execução dos Testes
+
+### 2.1. Iniciando o Appium Server
+Antes de executar os testes, o servidor Appium deve estar rodando. Utilize o seguinte comando:
+```sh
+appium
+```
+Se quiser rodar o Appium em background:
+```sh
+appium &
+```
+
+### 2.2. Executando os Testes
+Para rodar todos os testes automatizados, utilize:
 ```sh
 mvn test
 ```
-
-## 📄 Relatório de Testes
-Os relatórios de execução são gerados automaticamente na pasta:
+Para executar um teste específico:
+```sh
+mvn -Dtest=NomeDoTeste test
 ```
-appium-tests/reports/ExtentReport.html
+
+### 2.3. Configuração de Emulador
+Se precisar iniciar um emulador manualmente, utilize:
+```sh
+emulator -avd NomeDoEmulador
 ```
-Para visualizar o relatório, abra o arquivo `ExtentReport.html` em qualquer navegador.
+Para listar os emuladores disponíveis:
+```sh
+emulator -list-avds
+```
 
-## 📌 Testes Implementados
-- **LoginTest**: Testa o login com um usuário válido.
-- **CompraTest**: Testa o fluxo completo de compra de um produto.
+---
 
-## 🛠 Tecnologias Utilizadas
-- **Java**
-- **Appium**
-- **JUnit 5**
-- **Extent Reports** (para geração de relatórios)
+## 3. Solução de Problemas Comuns
 
-## 📢 Contato
-Caso tenha dúvidas ou sugestões, entre em contato pelo [seu e-mail ou GitHub].
+### Erro: "No devices/emulators found"
+**Solução:**
+1. Verifique se o emulador está rodando (`adb devices`)
+2. Se necessário, reinicie o servidor ADB:
+   ```sh
+   adb kill-server
+   adb start-server
+   ```
 
+### Erro: "Appium could not start"
+**Solução:**
+- Verifique se outra instância do Appium está rodando e finalize-a.
+- Rode o Appium com mais detalhes:
+  ```sh
+  appium --log-level debug
+  ```
+
+### Erro: "SessionNotCreatedException"
+**Solução:**
+- Certifique-se de que o APK ou pacote de testes está correto.
+- Verifique se o driver do Appium está atualizado:
+  ```sh
+  npm update -g appium
+  ```
+
+---
+
+## 4. Estrutura do Projeto
+```
+📂 testesE2Eappium
+ ├── 📂 src
+ │   ├── 📂 main
+ │   │   ├── 📂 java
+ │   │   └── 📂 resources
+ │   ├── 📂 test
+ │   │   ├── 📂 java
+ │   │   └── 📂 resources
+ ├── 📄 pom.xml
+ ├── 📄 README.md
+ ├── 📄 appium-config.json
+```
+
+---
+
+## 5. Relatórios e Logs
+Os screenshots dos testes são salvos automaticamente em:
+```sh
+C:\PROJETOSQA\testesE2Eappium\test-output
+```
+Para visualizar logs detalhados, consulte o diretório de saída do Maven.
+
+---
+
+Se encontrar problemas ou tiver sugestões, abra uma issue! 🚀
