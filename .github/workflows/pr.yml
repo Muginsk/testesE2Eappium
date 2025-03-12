@@ -15,30 +15,29 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk android-sdk
           echo "Configurando variáveis de ambiente..."
-          echo "ANDROID_HOME=$HOME/Android/Sdk" >> $GITHUB_ENV
-          echo "$ANDROID_HOME/tools" >> $GITHUB_PATH
+          echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+          echo "$ANDROID_HOME/tools/bin" >> $GITHUB_PATH
           echo "$ANDROID_HOME/platform-tools" >> $GITHUB_PATH
-          export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$PATH
+          export ANDROID_HOME=/usr/local/lib/android/sdk
+          export PATH=$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
           sdkmanager --list
           npm install -g appium
 
       - name: Iniciar Appium em background
-        run: appium &
+        run: appium --log-level error &
 
       - name: Verificar dispositivos conectados
         run: adb devices
 
-      - name: Configurar permissões para SDK Android
+      - name: Criar e iniciar emulador Android
         run: |
-          sudo chmod -R 777 /usr/local/lib/android
-          sudo chmod -R 777 $ANDROID_HOME
-
-      - name: Iniciar emulador Android
-        run: |
-          echo "Iniciando emulador..."
-          nohup emulator -avd NomeDoEmulador -no-snapshot-load -no-audio -no-window &  
+          echo "Criando e iniciando emulador..."
+          sdkmanager "system-images;android-30;default;x86_64"
+          echo "no" | avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
+          nohup emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
+          sleep 60  # Esperar o emulador carregar
           adb wait-for-device
-          adb shell input keyevent 82  # Desbloquear emulador
+          adb shell input keyevent 82  # Desbloquear tela
 
       - name: Executar testes automatizados
         run: mvn test
@@ -48,4 +47,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: screenshots
-          path: C:\PROJETOSQA\testesE2Eappium\test-output
+          path: $GITHUB_WORKSPACE/test-output
