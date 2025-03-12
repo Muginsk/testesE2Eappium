@@ -19,7 +19,7 @@ jobs:
           ANDROID_SDK_ROOT=$HOME/android-sdk
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
           
-          # Baixar o sdkmanager se não existir
+          # Baixar sdkmanager se não existir
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "Baixando sdkmanager..."
             wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
@@ -27,17 +27,17 @@ jobs:
             rm cmdline-tools.zip
           fi
           
-          # Verificar a estrutura extraída
+          # Verificar estrutura do diretório cmdline-tools
           echo "Conteúdo do diretório cmdline-tools:"
           ls -alh $ANDROID_SDK_ROOT/cmdline-tools/
           
-          # Se o diretório latest não foi criado corretamente, criar manualmente
+          # Se o diretório latest não foi criado corretamente, criá-lo manualmente
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "Criando diretório 'latest' manualmente..."
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
           
-          # Verificar a estrutura do diretório 'latest'
+          # Verificar a estrutura do diretório latest
           echo "Conteúdo do diretório latest:"
           ls -alh $ANDROID_SDK_ROOT/cmdline-tools/latest
           
@@ -50,25 +50,30 @@ jobs:
           echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
           echo "$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
           
-          # Verificar se sdkmanager está disponível
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          echo "PATH: $PATH"
-          
           # Verificar sdkmanager e adb
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          echo "Verificando o PATH:"
+          echo $PATH
+          
+          # Verificar se sdkmanager está disponível
+          echo "Verificando sdkmanager..."
           sdkmanager --version || echo "sdkmanager não encontrado"
+          
+          # Verificar se adb está disponível
+          echo "Verificando adb..."
           adb version || echo "adb não encontrado"
           
-          # Instalar as ferramentas necessárias para adb e emulator
+          # Instalar as ferramentas necessárias
           sdkmanager --update
           sdkmanager "platform-tools" "platforms;android-30" "emulator" "system-images;android-30;google_apis;x86_64"
           
-          # Verificar se sdkmanager e adb estão no PATH
-          echo "Verificando adb e sdkmanager no PATH"
-          echo $PATH
+          # Verificar novamente o adb e sdkmanager após instalação
+          echo "Verificando adb novamente..."
+          adb version || echo "adb não encontrado após instalação"
           
-          # Verificar se adb foi instalado corretamente
-          adb version || true
-          adb devices || true
+          # Tentar novamente a execução do adb devices
+          echo "Tentando adb devices..."
+          adb devices || echo "adb devices falhou"
 
       - name: Iniciar Appium em background
         run: appium --log-level error &
