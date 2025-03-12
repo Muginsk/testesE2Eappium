@@ -22,13 +22,16 @@ jobs:
           wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
           unzip cmdline-tools.zip -d latest
           
+          # Verificar se sdkmanager foi extraído corretamente
+          ls -alh $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          
           # Definir variáveis de ambiente
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >> $GITHUB_PATH
           echo "$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
           
-          # Ajustar permissões para garantir que o sdkmanager possa ser executado
+          # Ajustar permissões de execução para sdkmanager
           sudo chmod +x $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager
           
           # Certificar que o sdkmanager está no PATH
@@ -36,7 +39,7 @@ jobs:
           
           # Testar se o sdkmanager está acessível
           sdkmanager --version || true
-          sdkmanager --list || true  # Evitar falha caso lista de pacotes falhe
+          sdkmanager --list || true
 
       - name: Iniciar Appium em background
         run: appium --log-level error &
