@@ -19,7 +19,7 @@ jobs:
           # Definir o diretório do SDK
           ANDROID_SDK_ROOT=$HOME/android-sdk
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-
+          
           # Baixar sdkmanager se não existir
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "Baixando sdkmanager..."
@@ -27,29 +27,28 @@ jobs:
             unzip cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools/
             rm cmdline-tools.zip
           fi
-
+          
           # Criando o diretório latest, se necessário
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "Criando diretório 'latest' manualmente..."
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
-
+          
           # Baixar platform-tools explicitamente
           echo "Baixando platform-tools..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" --install
-
+          
           # Adicionando sdkmanager e platform-tools ao PATH
-          echo "Adicionando sdkmanager e platform-tools ao PATH..."
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-
+          
           # Verificando sdkmanager e adb
           which sdkmanager || echo "sdkmanager não encontrado"
           which adb || echo "adb não encontrado"
-
+          
           # Verificando conteúdo do diretório platform-tools
           echo "Conteúdo do diretório platform-tools:"
           ls -la $ANDROID_SDK_ROOT/platform-tools || echo "Erro ao acessar o diretório platform-tools"
-
+          
           # Tentando rodar adb devices
           echo "Tentando adb devices..."
           adb devices || echo "adb devices falhou"
@@ -58,7 +57,9 @@ jobs:
         run: appium --log-level error &
 
       - name: Verificar dispositivos conectados
-        run: adb devices
+        run: |
+          echo "Tentando adb devices..."
+          adb devices || echo "adb devices falhou"
 
       - name: Criar e iniciar emulador Android
         run: |
