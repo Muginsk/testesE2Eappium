@@ -6,10 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="293b24ff-a8db-4c01-8e7e-60bfdf354856" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExtentReport.html" beforeDir="false" afterPath="$PROJECT_DIR$/ExtentReport.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/login/LoginTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/login/LoginTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/pages/CheckoutPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pages/CheckoutPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pages/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pages/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/utils/ExtentReportUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/utils/ExtentReportUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/login/LoginTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/login/LoginTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-output/ExtentReport.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,8 +159,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.LoginTest" />
-        <item itemvalue="JUnit.LoginTest.testCompraCompleta" />
         <item itemvalue="JUnit.LoginTest.testLoginComSucesso" />
+        <item itemvalue="JUnit.LoginTest.testCompraCompleta" />
         <item itemvalue="JUnit.login in java-appium" />
         <item itemvalue="JUnit.LoginTest.DadologinComUsuarioValidoQuandoRealizoLoginEntaoUsuarioLogado" />
       </list>
