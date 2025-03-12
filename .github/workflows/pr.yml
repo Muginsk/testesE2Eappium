@@ -17,13 +17,14 @@ jobs:
           
           # Definir o diretório do SDK
           ANDROID_SDK_ROOT=$HOME/android-sdk
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
           
-          # Baixar o comando sdkmanager se não existir
+          # Baixar o sdkmanager se não existir
           if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
-            echo "Baixando o sdkmanager..."
+            echo "Baixando sdkmanager..."
             wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
             unzip cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools/latest/
+            rm cmdline-tools.zip
           fi
           
           # Ajustar permissões
