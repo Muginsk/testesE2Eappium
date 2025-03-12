@@ -15,11 +15,11 @@ jobs:
           # Atualizar e instalar dependências
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
-          
+
           # Definir o diretório do SDK
           ANDROID_SDK_ROOT=$HOME/android-sdk
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          
+
           # Baixar sdkmanager se não existir
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "Baixando sdkmanager..."
@@ -27,29 +27,29 @@ jobs:
             unzip cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools/
             rm cmdline-tools.zip
           fi
-          
+
           # Criando o diretório latest, se necessário
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "Criando diretório 'latest' manualmente..."
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
-          
+
           # Baixar platform-tools explicitamente
           echo "Baixando platform-tools..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" --install
-          
+
           # Adicionando sdkmanager e platform-tools ao PATH
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           echo "Adicionando sdkmanager e platform-tools ao PATH..."
-          
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+
           # Verificando sdkmanager e adb
           which sdkmanager || echo "sdkmanager não encontrado"
           which adb || echo "adb não encontrado"
-          
+
           # Verificando conteúdo do diretório platform-tools
           echo "Conteúdo do diretório platform-tools:"
           ls -la $ANDROID_SDK_ROOT/platform-tools || echo "Erro ao acessar o diretório platform-tools"
-          
+
           # Tentando rodar adb devices
           echo "Tentando adb devices..."
           adb devices || echo "adb devices falhou"
@@ -65,7 +65,7 @@ jobs:
           echo "Criando e iniciando emulador..."
           sdkmanager "system-images;android-30;default;x86_64"
           echo "no" | avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
-          nohup emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
+          nohup emulator -avd TestAVD -no-snapshot-load -no-audio -no-window & 
           sleep 60  # Esperar o emulador carregar
           adb wait-for-device
           adb shell input keyevent 82  # Desbloquear tela
