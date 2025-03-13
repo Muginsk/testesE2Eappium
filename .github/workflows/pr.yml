@@ -60,13 +60,23 @@ jobs:
           echo "Tentando adb devices..."
           adb devices || echo "adb devices falhou"
 
+      - name: Verificar imagens do sistema disponíveis
+        run: |
+          echo "Verificando imagens do sistema disponíveis..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep system-images
+
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
           
           # Verificar se a system image foi instalada corretamente
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep system-images
-          
+          if ! $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep -q "system-images;android-30;default;x86_64"; then
+            echo "Imagem do sistema 'system-images;android-30;default;x86_64' não encontrada! Instalando..."
+            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64" --install
+          else
+            echo "Imagem do sistema 'system-images;android-30;default;x86_64' já instalada!"
+          fi
+
           # Criar AVD
           if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
             echo "Criando o AVD 'TestAVD'..."
