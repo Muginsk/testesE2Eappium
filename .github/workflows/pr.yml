@@ -12,7 +12,7 @@ jobs:
 
       - name: Configurar ambiente
         run: |
-          # Atualizar e instalar dependênciaas
+          # Atualizar e instalar dependências
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
 
@@ -36,12 +36,11 @@ jobs:
           
           # Baixar platform-tools e emulador
           echo "Baixando platform-tools e emulador..."
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator"
-
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-30;default;x86_64" --install
+          
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
           echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
-          echo "PATH: $PATH"
 
           # Verificando sdkmanager, adb e emulator
           which sdkmanager || echo "sdkmanager não encontrado"
@@ -56,14 +55,19 @@ jobs:
           echo "Tentando adb devices..."
           adb devices || echo "adb devices falhou"
 
+      - name: Iniciar Appium em background
+        run: appium --log-level error &
+
+      - name: Verificar dispositivos conectados
+        run: |
+          echo "Tentando adb devices..."
+          adb devices || echo "adb devices falhou"
+
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
           
-          # Baixar imagem do sistema Android
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64"
-
-          # Criar AVD se não existir
+          # Criar AVD
           if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
             echo "Criando o AVD 'TestAVD'..."
             echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
@@ -71,15 +75,13 @@ jobs:
             echo "AVD 'TestAVD' já existe!"
           fi
 
-          # Listar AVDs disponíveis
+          # Verificar se o AVD foi criado corretamente
           echo "Listando AVDs disponíveis..."
-          $ANDROID_SDK_ROOT/emulator/emulator -list-avds
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
 
           # Iniciar o emulador
           nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
-          
-          # Esperar o emulador carregar
-          echo "Aguardando o emulador iniciar..."
+          sleep 60  # Esperar o emulador carregar
           adb wait-for-device
           adb shell input keyevent 82  # Desbloquear tela
 
@@ -88,4 +90,7 @@ jobs:
 
       - name: Upload de screenshots em caso de falha
         if: failure()
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: $GITHUB_WORKSPACE/test-output
