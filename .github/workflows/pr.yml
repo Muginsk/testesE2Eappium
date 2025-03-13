@@ -36,6 +36,7 @@ jobs:
           
           # Baixar platform-tools, emulador e system-image x86_64
           echo "Baixando platform-tools, emulador e system-image..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-30;default;x86_64" --install
           
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
@@ -62,6 +63,9 @@ jobs:
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
+          
+          # Verificar se a system image foi instalada corretamente
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep system-images
           
           # Criar AVD
           if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
