@@ -12,7 +12,7 @@ jobs:
 
       - name: Configurar ambiente
         run: |
-          # Atualizar e instalar dependência
+          # Atualizar e instalar dependênciaas
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
 
