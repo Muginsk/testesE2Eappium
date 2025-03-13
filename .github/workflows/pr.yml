@@ -39,18 +39,18 @@ jobs:
           echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
           echo "PATH: $PATH"
 
-          # Aceitar licenças
-          yes | sdkmanager --licenses
-
-          # Baixar platform-tools e emulador
-          echo "Baixando platform-tools e emulador..."
-          yes | sdkmanager "platform-tools" "emulator"
-
-          # Verificando sdkmanager, adb e emulator
+          # Verificando sdkmanager
           which sdkmanager || echo "sdkmanager não encontrado"
           which adb || echo "adb não encontrado"
           which emulator || echo "emulator não encontrado"
-          
+
+          # Aceitar licenças
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+
+          # Baixar platform-tools e emulador
+          echo "Baixando platform-tools e emulador..."
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator"
+
           # Verificando conteúdo do diretório platform-tools
           echo "Conteúdo do diretório platform-tools:"
           ls -la $ANDROID_SDK_ROOT/platform-tools || echo "Erro ao acessar o diretório platform-tools"
@@ -64,22 +64,22 @@ jobs:
           echo "Criando e iniciando emulador..."
           
           # Baixar imagem do sistema Android
-          yes | sdkmanager "system-images;android-30;default;x86_64"
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64"
 
           # Criar AVD se não existir
           if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
             echo "Criando o AVD 'TestAVD'..."
-            echo "no" | avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
+            echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
           else
             echo "AVD 'TestAVD' já existe!"
           fi
 
           # Listar AVDs disponíveis
           echo "Listando AVDs disponíveis..."
-          emulator -list-avds
+          $ANDROID_SDK_ROOT/emulator/emulator -list-avds
 
           # Iniciar o emulador
-          nohup emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
+          nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
           
           # Esperar o emulador carregar
           echo "Aguardando o emulador iniciar..."
