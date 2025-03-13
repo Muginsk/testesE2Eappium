@@ -66,9 +66,20 @@ jobs:
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
+          
+          # Baixar imagem do sistema Android
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64"
-          echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
-          nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window & 
+
+          # Criar AVD se não existir
+          if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
+            echo "Criando o AVD 'TestAVD'..."
+            echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
+          else
+            echo "AVD 'TestAVD' já existe!"
+          fi
+
+          # Iniciar o emulador
+          nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
           sleep 60  # Esperar o emulador carregar
           adb wait-for-device
           adb shell input keyevent 82  # Desbloquear tela
