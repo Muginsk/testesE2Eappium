@@ -71,6 +71,10 @@ jobs:
             echo "AVD 'TestAVD' já existe!"
           fi
 
+          # Listar AVDs disponíveis
+          echo "Listando AVDs disponíveis..."
+          $ANDROID_SDK_ROOT/emulator/emulator -list-avds
+
           # Iniciar o emulador
           nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
           
@@ -84,7 +88,4 @@ jobs:
 
       - name: Upload de screenshots em caso de falha
         if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshots
-          path: $GITHUB_WORKSPACE/test-output
+        uses: actions/upload-artifact
