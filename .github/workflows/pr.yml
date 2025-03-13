@@ -73,6 +73,8 @@ jobs:
 
           # Iniciar o emulador
           nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
+
+          # Esperar o emulador carregar e fazer o desbloqueio da tela
           sleep 60  # Esperar o emulador carregar
           adb wait-for-device
           adb shell input keyevent 82  # Desbloquear tela
