@@ -77,13 +77,9 @@ jobs:
             echo "Imagem do sistema 'system-images;android-30;default;x86_64' já instalada!"
           fi
 
-          # Verificar a existência do AVD
-          if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
-            echo "Criando o AVD 'TestAVD'..."
-            echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
-          else
-            echo "AVD 'TestAVD' já existe!"
-          fi
+          # Forçar criação do AVD
+          echo "Criando o AVD 'TestAVD'..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
 
           # Verificar se o AVD foi criado corretamente
           echo "Listando AVDs disponíveis..."
