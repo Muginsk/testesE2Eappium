@@ -34,10 +34,10 @@ jobs:
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
           
-          # Baixar platform-tools, emulador e system-image x86_64
+          # Baixar platform-tools, emulador e system-image android-29
           echo "Baixando platform-tools, emulador e system-image..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-30;default;x86_64" --install
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-29;default;x86_64" --install
           
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
@@ -51,21 +51,24 @@ jobs:
           # Verificar se adb está disponível
           adb devices || echo "adb devices falhou"
 
-      - name: Verificar se imagem do sistema está instalada
+      - name: Verificar imagens do sistema
         run: |
           echo "Verificando imagens do sistema..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep "system-images;android-30;default;x86_64" || echo "Imagem do sistema 'android-30' não encontrada!"
+          # Listar as imagens do sistema instaladas para ver o caminho correto
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep "system-images"
+          echo "Imagens do sistema instaladas: "
+          find $ANDROID_SDK_ROOT -name "*x86_64" || echo "Nenhuma imagem do sistema encontrada!"
 
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
           
           # Verificar se a system image foi instalada corretamente
-          if ! $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep -q "system-images;android-30;default;x86_64"; then
-            echo "Imagem do sistema 'system-images;android-30;default;x86_64' não encontrada! Instalando..."
-            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64" --install
+          if ! $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep -q "system-images;android-29;default;x86_64"; then
+            echo "Imagem do sistema 'system-images;android-29;default;x86_64' não encontrada! Instalando..."
+            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-29;default;x86_64" --install
           else
-            echo "Imagem do sistema 'system-images;android-30;default;x86_64' já instalada!"
+            echo "Imagem do sistema 'system-images;android-29;default;x86_64' já instalada!"
           fi
 
           # Exibir caminho das imagens do sistema instaladas
@@ -73,8 +76,14 @@ jobs:
           find $ANDROID_SDK_ROOT -name "*x86_64"
 
           # Atualizando para usar o caminho absoluto da imagem
-          SYSTEM_IMAGE_PATH="$ANDROID_SDK_ROOT/system-images/android-30/default/x86_64"
+          SYSTEM_IMAGE_PATH="$ANDROID_SDK_ROOT/system-images/android-29/default/x86_64"
           echo "Caminho da imagem do sistema: $SYSTEM_IMAGE_PATH"
+
+          # Verificar se o caminho da imagem do sistema está correto
+          if [ ! -d "$SYSTEM_IMAGE_PATH" ]; then
+            echo "Erro: O caminho da imagem do sistema não foi encontrado!"
+            exit 1
+          fi
 
           # Criando o AVD com o caminho completo para a imagem do sistema
           echo "Criando o AVD 'TestAVD'..."
