@@ -14,7 +14,7 @@ jobs:
         run: |
           # Atualizar e instalar dependências
           sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip
+          sudo apt-get install -y openjdk-11-jdk wget unzip lib32z1 lib32ncurses6 lib32stdc++6
 
           # Definir o diretório do SDK
           ANDROID_SDK_ROOT=$HOME/android-sdk
