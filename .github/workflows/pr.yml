@@ -12,7 +12,7 @@ jobs:
 
       - name: Configurar ambiente
         run: |
-          # Atualizar e instalar dependência
+          # Atualizar e instalar dependências
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
 
@@ -36,7 +36,7 @@ jobs:
           
           # Baixar platform-tools e emulador
           echo "Baixando platform-tools e emulador..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" --install
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-30;default;x86_64" --install
           
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
@@ -67,16 +67,17 @@ jobs:
         run: |
           echo "Criando e iniciando emulador..."
           
-          # Baixar imagem do sistema Android
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64"
-
-          # Criar AVD se não existir
+          # Criar AVD
           if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
             echo "Criando o AVD 'TestAVD'..."
             echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
           else
             echo "AVD 'TestAVD' já existe!"
           fi
+
+          # Verificar se o AVD foi criado corretamente
+          echo "Listando AVDs disponíveis..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
 
           # Iniciar o emulador
           nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
