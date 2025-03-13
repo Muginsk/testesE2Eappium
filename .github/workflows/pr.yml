@@ -41,6 +41,7 @@ jobs:
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
           echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
+          echo "PATH: $PATH"
 
           # Verificando sdkmanager, adb e emulator
           which sdkmanager || echo "sdkmanager não encontrado"
@@ -54,9 +55,6 @@ jobs:
           # Tentando rodar adb devices
           echo "Tentando adb devices..."
           adb devices || echo "adb devices falhou"
-
-      - name: Iniciar Appium em background
-        run: appium --log-level error &
 
       - name: Criar e iniciar emulador Android
         run: |
