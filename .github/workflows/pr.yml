@@ -71,12 +71,16 @@ jobs:
             echo "Imagem do sistema 'system-images;android-29;default;x86_64' já instalada!"
           fi
 
+          # Listar os AVDs disponíveis antes de criar o novo
+          echo "Listando AVDs existentes..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
+
           # Criando o AVD com a imagem do sistema diretamente
           echo "Criando o AVD 'TestAVD'..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-29;default;x86_64" --device "pixel" --force --sdcard 512M
 
           # Verificar se o AVD foi criado corretamente
-          echo "Listando AVDs disponíveis..."
+          echo "Listando AVDs disponíveis após a criação..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
 
           # Iniciar o emulador
