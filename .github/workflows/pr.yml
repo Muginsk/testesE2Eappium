@@ -52,19 +52,6 @@ jobs:
           echo "Tentando adb devices..."
           adb devices || echo "adb devices falhou"
 
-      - name: Iniciar Appium em background
-        run: appium --log-level error &
-
-      - name: Verificar dispositivos conectados
-        run: |
-          echo "Tentando adb devices..."
-          adb devices || echo "adb devices falhou"
-
-      - name: Verificar imagens do sistema disponíveis
-        run: |
-          echo "Verificando imagens do sistema disponíveis..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep system-images
-
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
@@ -77,9 +64,9 @@ jobs:
             echo "Imagem do sistema 'system-images;android-30;default;x86_64' já instalada!"
           fi
 
-          # Forçar criação do AVD
+          # Forçar criação do AVD com caminho absoluto
           echo "Criando o AVD 'TestAVD'..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --device "pixel" --force
 
           # Verificar se o AVD foi criado corretamente
           echo "Listando AVDs disponíveis..."
