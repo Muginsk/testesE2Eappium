@@ -63,9 +63,8 @@ jobs:
             echo "Imagem do sistema 'system-images;android-30;default;x86_64' já instalada!"
           fi
 
-          # Forçar criação do AVD com caminho absoluto
-          SYSTEM_IMAGE_PATH="$ANDROID_SDK_ROOT/system-images/android-30/default/x86_64"
-          echo "Criando o AVD 'TestAVD' com caminho completo da imagem do sistema..."
+          # Criando o AVD sem caminho completo
+          echo "Criando o AVD 'TestAVD'..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --device "pixel" --force
 
           # Verificar se o AVD foi criado corretamente
