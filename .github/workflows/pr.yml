@@ -39,17 +39,17 @@ jobs:
           echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
           echo "PATH: $PATH"
 
-          # Verificando sdkmanager
-          which sdkmanager || echo "sdkmanager não encontrado"
-          which adb || echo "adb não encontrado"
-          which emulator || echo "emulator não encontrado"
-
           # Aceitar licenças
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
           # Baixar platform-tools e emulador
           echo "Baixando platform-tools e emulador..."
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator"
+
+          # Verificando sdkmanager, adb e emulator
+          which sdkmanager || echo "sdkmanager não encontrado"
+          which adb || echo "adb não encontrado"
+          which emulator || echo "emulator não encontrado"
 
           # Verificando conteúdo do diretório platform-tools
           echo "Conteúdo do diretório platform-tools:"
@@ -93,5 +93,3 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots
-          path: $GITHUB_WORKSPACE/test-output
