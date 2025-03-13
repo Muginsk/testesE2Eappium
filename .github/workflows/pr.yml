@@ -34,8 +34,8 @@ jobs:
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
           
-          # Baixar platform-tools e emulador
-          echo "Baixando platform-tools e emulador..."
+          # Baixar platform-tools, emulador e system-image x86_64
+          echo "Baixando platform-tools, emulador e system-image..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-30;default;x86_64" --install
           
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
@@ -46,10 +46,6 @@ jobs:
           which sdkmanager || echo "sdkmanager não encontrado"
           which adb || echo "adb não encontrado"
           which emulator || echo "emulator não encontrado"
-          
-          # Verificando conteúdo do diretório platform-tools
-          echo "Conteúdo do diretório platform-tools:"
-          ls -la $ANDROID_SDK_ROOT/platform-tools || echo "Erro ao acessar o diretório platform-tools"
           
           # Tentando rodar adb devices
           echo "Tentando adb devices..."
