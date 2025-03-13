@@ -12,7 +12,7 @@ jobs:
 
       - name: Configurar ambiente
         run: |
-          # Atualizar e instalar dependências
+          # Atualizar e instalar dependência
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
 
@@ -36,8 +36,8 @@ jobs:
           
           # Baixar platform-tools e emulador
           echo "Baixando platform-tools e emulador..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-30;default;x86_64" --install
-          
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator"
+
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
           echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
@@ -58,16 +58,14 @@ jobs:
       - name: Iniciar Appium em background
         run: appium --log-level error &
 
-      - name: Verificar dispositivos conectados
-        run: |
-          echo "Tentando adb devices..."
-          adb devices || echo "adb devices falhou"
-
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
           
-          # Criar AVD
+          # Baixar imagem do sistema Android
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64"
+
+          # Criar AVD se não existir
           if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
             echo "Criando o AVD 'TestAVD'..."
             echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
@@ -75,13 +73,11 @@ jobs:
             echo "AVD 'TestAVD' já existe!"
           fi
 
-          # Verificar se o AVD foi criado corretamente
-          echo "Listando AVDs disponíveis..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
-
           # Iniciar o emulador
           nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
-          sleep 60  # Esperar o emulador carregar
+          
+          # Esperar o emulador carregar
+          echo "Aguardando o emulador iniciar..."
           adb wait-for-device
           adb shell input keyevent 82  # Desbloquear tela
 
