@@ -12,7 +12,7 @@ jobs:
 
       - name: Configurar ambiente
         run: |
-          # Atualizar e instalar dependências
+          # Atualizar e instalar dependência
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
 
@@ -34,19 +34,26 @@ jobs:
             mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
           
-          # Baixar platform-tools, emulador e system-image x86_64
-          echo "Baixando platform-tools, emulador e system-image..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-30;default;x86_64" --install
-          
           # Adicionando sdkmanager, platform-tools e emulator ao PATH
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
           echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
+          echo "PATH: $PATH"
+
+          # Aceitar licenças
+          yes | sdkmanager --licenses
+
+          # Baixar platform-tools e emulador
+          echo "Baixando platform-tools e emulador..."
+          yes | sdkmanager "platform-tools" "emulator"
 
           # Verificando sdkmanager, adb e emulator
           which sdkmanager || echo "sdkmanager não encontrado"
           which adb || echo "adb não encontrado"
           which emulator || echo "emulator não encontrado"
+          
+          # Verificando conteúdo do diretório platform-tools
+          echo "Conteúdo do diretório platform-tools:"
+          ls -la $ANDROID_SDK_ROOT/platform-tools || echo "Erro ao acessar o diretório platform-tools"
           
           # Tentando rodar adb devices
           echo "Tentando adb devices..."
@@ -56,25 +63,26 @@ jobs:
         run: |
           echo "Criando e iniciando emulador..."
           
-          # Verificar se a system image foi instalada corretamente
-          if ! $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep -q "system-images;android-30;default;x86_64"; then
-            echo "Imagem do sistema 'system-images;android-30;default;x86_64' não encontrada! Instalando..."
-            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-30;default;x86_64" --install
+          # Baixar imagem do sistema Android
+          yes | sdkmanager "system-images;android-30;default;x86_64"
+
+          # Criar AVD se não existir
+          if [ ! -f "$HOME/.android/avd/TestAVD.ini" ]; then
+            echo "Criando o AVD 'TestAVD'..."
+            echo "no" | avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --force
           else
-            echo "Imagem do sistema 'system-images;android-30;default;x86_64' já instalada!"
+            echo "AVD 'TestAVD' já existe!"
           fi
 
-          # Forçar criação do AVD com caminho absoluto
-          echo "Criando o AVD 'TestAVD'..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-30;default;x86_64" --device "pixel" --force
-
-          # Verificar se o AVD foi criado corretamente
+          # Listar AVDs disponíveis
           echo "Listando AVDs disponíveis..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
+          emulator -list-avds
 
           # Iniciar o emulador
-          nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
-          sleep 60  # Esperar o emulador carregar
+          nohup emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
+          
+          # Esperar o emulador carregar
+          echo "Aguardando o emulador iniciar..."
           adb wait-for-device
           adb shell input keyevent 82  # Desbloquear tela
 
