@@ -71,23 +71,9 @@ jobs:
             echo "Imagem do sistema 'system-images;android-29;default;x86_64' já instalada!"
           fi
 
-          # Exibir caminho das imagens do sistema instaladas
-          echo "Listando os caminhos das imagens do sistema instaladas..."
-          find $ANDROID_SDK_ROOT -name "*x86_64"
-
-          # Atualizando para usar o caminho absoluto da imagem
-          SYSTEM_IMAGE_PATH="$ANDROID_SDK_ROOT/system-images/android-29/default/x86_64"
-          echo "Caminho da imagem do sistema: $SYSTEM_IMAGE_PATH"
-
-          # Verificar se o caminho da imagem do sistema está correto
-          if [ ! -d "$SYSTEM_IMAGE_PATH" ]; then
-            echo "Erro: O caminho da imagem do sistema não foi encontrado!"
-            exit 1
-          fi
-
-          # Criando o AVD com o caminho completo para a imagem do sistema
+          # Criando o AVD com a imagem do sistema diretamente
           echo "Criando o AVD 'TestAVD'..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "$SYSTEM_IMAGE_PATH" --device "pixel" --force --sdcard 512M
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-29;default;x86_64" --device "pixel" --force --sdcard 512M
 
           # Verificar se o AVD foi criado corretamente
           echo "Listando AVDs disponíveis..."
