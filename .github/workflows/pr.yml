@@ -59,6 +59,12 @@ jobs:
           echo "Imagens do sistema instaladas: "
           find $ANDROID_SDK_ROOT -name "*x86_64" || echo "Nenhuma imagem do sistema encontrada!"
 
+      - name: Atualizar sdkmanager e aceitar licenças
+        run: |
+          echo "Atualizando sdkmanager..."
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
+
       - name: Criar e iniciar emulador Android
         run: |
           echo "Criando e iniciando emulador..."
@@ -77,7 +83,7 @@ jobs:
 
           # Criando o AVD com a imagem do sistema diretamente
           echo "Criando o AVD 'TestAVD'..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-29;default;x86_64" --device "pixel" --force --sdcard 512M
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-29;default;x86_64" --device "pixel_3" --force --sdcard 512M
 
           # Verificar se o AVD foi criado corretamente
           echo "Listando AVDs disponíveis após a criação..."

@@ -50,28 +50,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.LoginTest.DadologinComUsuarioValidoQuandoRealizoLoginEntaoUsuarioLogado.executor": "Run",
-    "JUnit.LoginTest.executor": "Run",
-    "JUnit.LoginTest.testCompraCompleta.executor": "Run",
-    "JUnit.LoginTest.testLoginComSucesso.executor": "Run",
-    "JUnit.login in java-appium.executor": "Run",
-    "Maven.java-appium [clean,install,-U].executor": "Run",
-    "Maven.java-appium [clean,install].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "muginsk",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/PROJETOSQA/testesE2Eappium",
-    "onboarding.tips.debug.path": "C:/projetosAutomacao/java-appium/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.LoginTest.DadologinComUsuarioValidoQuandoRealizoLoginEntaoUsuarioLogado.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LoginTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LoginTest.testCompraCompleta.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LoginTest.testLoginComSucesso.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.login in java-appium.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.java-appium [clean,install,-U].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.java-appium [clean,install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;muginsk&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/PROJETOSQA/testesE2Eappium&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/projetosAutomacao/java-appium/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean install -U" />
