@@ -56,7 +56,7 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
-          profile: Pixel_7_Pro_API_34
+          profile: pixel_6_pro
           script: |
             avdmanager list device
             sleep 60

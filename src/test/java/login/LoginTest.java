@@ -40,7 +40,7 @@ public class LoginTest {
                     .setUdid("emulator-5554")
                     .setAutomationName("UiAutomator2");
 
-            driver = new AndroidDriver(new URL("http://127.0.0.1:4725"), options);
+            driver = new AndroidDriver(new URL("http://127.0.0.1:4725/wd/hub"), options);
             System.out.println("Driver configurado com sucesso!");
 
             loginPage = new LoginPage(driver);
