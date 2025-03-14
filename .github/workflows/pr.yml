@@ -58,7 +58,9 @@ jobs:
           profile: pixel_6_pro
           script: |
             avdmanager list device
-            robot -d ./reports -v APPIUM_PORT:4725 .
+
+      - name: Executar testes automatizados
+        run: mvn test
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
