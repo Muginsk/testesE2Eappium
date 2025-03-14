@@ -3,106 +3,76 @@ name: pr
 on: [push, pull_request]
 
 jobs:
-  test:
+  execute_test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Configurar ambiente
-        run: |
-          # Atualizar e instalar dependências
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip lib32z1 lib32ncurses6 lib32stdc++6
-
-          # Definir o diretório do SDK
-          ANDROID_SDK_ROOT=$HOME/android-sdk
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          
-          # Baixar sdkmanager se não existir
-          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
-            echo "Baixando sdkmanager..."
-            wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
-            unzip cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools/
-            rm cmdline-tools.zip
-          fi
-          
-          # Criando o diretório latest, se necessário
-          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
-            echo "Criando diretório 'latest' manualmente..."
-            mv $ANDROID_SDK_ROOT/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest
-          fi
-          
-          # Baixar platform-tools, emulador e system-image android-29
-          echo "Baixando platform-tools, emulador e system-image..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "emulator" "system-images;android-29;default;x86_64" --install
-          
-          # Adicionando sdkmanager, platform-tools e emulator ao PATH
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH
-          echo "Adicionando sdkmanager, platform-tools e emulator ao PATH..."
-
-          # Verificando sdkmanager, adb e emulator
-          which sdkmanager || echo "sdkmanager não encontrado"
-          which adb || echo "adb não encontrado"
-          which emulator || echo "emulator não encontrado"
-
-          # Verificar se adb está disponível
-          adb devices || echo "adb devices falhou"
-
-      - name: Verificar imagens do sistema
-        run: |
-          echo "Verificando imagens do sistema..."
-          # Listar as imagens do sistema instaladas para ver o caminho correto
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep "system-images"
-          echo "Imagens do sistema instaladas: "
-          find $ANDROID_SDK_ROOT -name "*x86_64" || echo "Nenhuma imagem do sistema encontrada!"
-
-      - name: Atualizar sdkmanager e aceitar licenças
-        run: |
-          echo "Atualizando sdkmanager..."
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
-
-      - name: Criar e iniciar emulador Android
-        run: |
-          echo "Criando e iniciando emulador..."
-          
-          # Verificar se a system image foi instalada corretamente
-          if ! $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list | grep -q "system-images;android-29;default;x86_64"; then
-            echo "Imagem do sistema 'system-images;android-29;default;x86_64' não encontrada! Instalando..."
-            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-29;default;x86_64" --install
-          else
-            echo "Imagem do sistema 'system-images;android-29;default;x86_64' já instalada!"
-          fi
-
-          # Listar os AVDs disponíveis antes de criar o novo
-          echo "Listando AVDs existentes..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
-
-          # Criando o AVD com a imagem do sistema diretamente
-          echo "Criando o AVD 'TestAVD'..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n TestAVD -k "system-images;android-29;default;x86_64" --device "pixel_3" --force --sdcard 512M
-
-          # Verificar se o AVD foi criado corretamente
-          echo "Listando AVDs disponíveis após a criação..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager list avd
-
-          # Iniciar o emulador
-          nohup $ANDROID_SDK_ROOT/emulator/emulator -avd TestAVD -no-snapshot-load -no-audio -no-window &
-
-          # Esperar o emulador carregar e fazer o desbloqueio da tela
-          sleep 60  # Esperar o emulador carregar
-          adb wait-for-device
-          adb shell input keyevent 82  # Desbloquear tela
-
-      - name: Executar testes automatizados
-        run: mvn test
-
-      - name: Upload de screenshots em caso de falha
-        if: failure()
-        uses: actions/upload-artifact@v4
+      - name: Use Python 3.9
+        uses: actions/setup-python@v5
         with:
-          name: screenshots
-          path: $GITHUB_WORKSPACE/test-output
+          python-version: 3.9
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run:
+          pip install -r requirements.txt
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Install Appium
+        run: |
+          npm install -g appium
+
+      - name: Install UiAutomator2
+        run: |
+          appium driver install uiautomator2
+
+      - name: Start up Appium
+        run: |
+          nohup appium -p 4725 -pa /wd/hub &
+
+      - name: Install Android SDK system image
+        run: |
+          sdkmanager --install "system-images;android-34;google_apis;x86_64"
+
+      - name: Create Device
+        run: |
+          echo no | avdmanager create avd -n "Pixel_7_Pro_API_34" -k "system-images;android-34;google_apis;x86_64" -d pixel_7_pro
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6_pro
+          script: |
+            avdmanager list device
+            robot -d ./reports -v APPIUM_PORT:4725 .
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reports
+          path: reports
