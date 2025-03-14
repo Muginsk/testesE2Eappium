@@ -34,7 +34,7 @@ public class LoginTest {
             System.out.println("Configurando driver para o teste...");
             UiAutomator2Options options = new UiAutomator2Options()
                     .setPlatformName("Android")
-                    .setDeviceName("Pixel 7 Pro")
+                    .setDeviceName("Pixel_7_Pro_API_34")
                     .setAppPackage("com.swaglabsmobileapp")
                     .setAppActivity("com.swaglabsmobileapp.MainActivity")
                     .setUdid("emulator-5554")
