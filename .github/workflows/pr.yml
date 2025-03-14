@@ -59,6 +59,7 @@ jobs:
           profile: pixel_6_pro
           script: |
             avdmanager list device
+            adb -s emulator-5554 install /apk/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
             sleep 60
             mvn test
 
