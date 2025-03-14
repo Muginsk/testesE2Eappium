@@ -56,9 +56,10 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
-          profile: pixel_6_pro
+          profile: Pixel_7_Pro_API_34
           script: |
             avdmanager list device
+            sleep 60
             mvn test
 
       - name: Upload test results
