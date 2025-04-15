@@ -31,7 +31,7 @@ public class LoginTest {
     @BeforeEach
     public void setUp() {
         try {
-            System.out.println("Configurando driver para o teste...");
+            System.out.println("Configurando driver para o testes...");
             UiAutomator2Options options = new UiAutomator2Options()
                     .setPlatformName("Android")
                     .setDeviceName("Pixel_7_Pro_API_34")

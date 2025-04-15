@@ -20,7 +20,7 @@ public class CheckoutPage {
             WebElement botaoCarrinho = new WebDriverWait(driver, Duration.ofSeconds(10))
                     .until(ExpectedConditions.elementToBeClickable(AppiumBy.accessibilityId("test-Cart")));
             botaoCarrinho.click();
-        }, "Erro ao clicar no botão do carrinho");
+        }, "Erro ao clicar no botão do carrinhoo");
     }
 
     public void iniciarCheckout() {

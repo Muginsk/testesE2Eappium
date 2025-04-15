@@ -84,7 +84,7 @@ public class ExtentReportUtil {
     }
 
     public static void captureScreenshotOnFailure(AndroidDriver driver, ExtentTest test, String testName, Throwable throwable) {
-        logError(test, "Teste falhou: " + testName, throwable);
+        logError(test, "Teste falhou : " + testName, throwable);
         captureScreenshot(driver, test, testName);
     }
 
